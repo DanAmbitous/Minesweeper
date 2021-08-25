@@ -1,17 +1,33 @@
-const board = document.querySelector(".board")
-
-const tiles = []
-
-for (let index = 0; index < 100; index++) {
-  tiles.push(document.createElement("div"))
+const TILE_STATUSES = {
+  HIDDEN: "hidden",
+  MINE: "mine",
+  MARKED: "marked",
+  NUMBER: "number",
 }
 
-tiles.forEach((tile) => {
-  board.append(tile)
-})
+export function createBoard(boardSize, numberOfMines) {
+  const board = []
 
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("board")) {
-    e.target.classList.add()
+  for (let x = 0; x < boardSize; x++) {
+    const row = []
+
+    for (let y = 0; y < boardSize; y++) {
+      const element = document.createElement("div")
+      element.dataset.status = TILE_STATUSES.HIDDEN
+
+      const tile = {
+        element,
+        x,
+        y,
+      }
+
+      row.push(tile)
+    }
+
+    board.push(row)
+
+    console.log(board)
   }
-})
+
+  return board
+}
