@@ -23,13 +23,17 @@ export function createBoard(boardSize, numberOfMines) {
         element,
         x,
         y,
-        mine: true,
+        mine: minePositions.some(positionMatch.bind(null, { x, y })),
         get status() {
           return this.element.dataset.status
         },
         set status(value) {
           this.element.dataset.status = value
         },
+      }
+
+      if (tile.mine) {
+        tile.element.dataset.status = TITLE_STATUSES.MINE
       }
 
       row.push(tile)
