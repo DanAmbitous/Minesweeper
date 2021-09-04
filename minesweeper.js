@@ -95,6 +95,7 @@ export function revealTile(board, tile) {
   const mines = adjacentTiles.filter((t) => t.mine)
 
   if (mines.length === 0) {
+    adjacentTiles.forEach(revealTile.bind(null, board))
   } else {
     tile.element.textContent = mines.length
   }
@@ -111,4 +112,12 @@ function nearByTiles(board, { x, y }) {
   }
 
   return tiles
+}
+
+export function checkWin(board) {
+  return false
+}
+
+export function checkLose(board) {
+  return true
 }

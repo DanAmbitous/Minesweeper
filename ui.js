@@ -5,11 +5,14 @@ import {
   createBoard,
   markTile,
   revealTile,
+  checkWin,
+  checkLose,
 } from "./minesweeper.js"
 
-const BOARD_SIZE = 5
-const NUMBER_OF_MINES = 5
+const BOARD_SIZE = 10
+const NUMBER_OF_MINES = 10
 let minesLeftDisplayer = document.querySelector("#mine-count")
+const gameMessage = document.querySelector(".subtext")
 
 const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES)
 const boardElement = document.querySelector(".board")
@@ -20,10 +23,7 @@ board.forEach((row) => {
     boardElement.append(tile.element)
     tile.element.addEventListener("click", (e) => {
       revealTile(board, tile)
-
-      if (e.target.innerText === "" && e.target.dataset.status != "mine") {
-        e.target.innerText = "0"
-      }
+      checkGameStatus(board)
     })
     tile.element.addEventListener("contextmenu", (e) => {
       e.preventDefault()
@@ -45,4 +45,30 @@ function listMinesRemaning() {
   } else {
     minesLeftDisplayer.innerText = 0
   }
+}
+
+function checkGameStatus(board) {
+  const win = checkWin(board)
+  const lose = checkLose(board)
+
+  if (win) {
+    gameMessage.innerText = "You've won!"
+  } else if (lose) {
+    gameMessage.innerText = "You've lost!"
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.mine) revealTile(board, tile)
+      })
+    })
+  }
+
+  if (win || lose) {
+    boardElement.addEventListener("click", stopProp, { capture: true })
+    boardElement.addEventListener("contextmenu", stopProp, { capture: true })
+  }
+}
+
+function stopProp(e) {
+  e.stopImmediatePropagation()
 }
