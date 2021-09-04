@@ -115,9 +115,22 @@ function nearByTiles(board, { x, y }) {
 }
 
 export function checkWin(board) {
-  return false
+  return board.every((row) => {
+    return row.every((tile) => {
+      return (
+        tile.status === TITLE_STATUSES.NUMBER ||
+        (tile.mine &&
+          (tile.status === TITLE_STATUSES.HIDDEN ||
+            tile.status === TITLE_STATUSES.MARKED))
+      )
+    })
+  })
 }
 
 export function checkLose(board) {
-  return true
+  return board.some((row) => {
+    return row.some((tile) => {
+      return tile.status === TITLE_STATUSES.MINE
+    })
+  })
 }

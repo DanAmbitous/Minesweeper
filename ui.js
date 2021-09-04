@@ -10,7 +10,7 @@ import {
 } from "./minesweeper.js"
 
 const BOARD_SIZE = 10
-const NUMBER_OF_MINES = 10
+const NUMBER_OF_MINES = 3
 let minesLeftDisplayer = document.querySelector("#mine-count")
 const gameMessage = document.querySelector(".subtext")
 
@@ -58,6 +58,7 @@ function checkGameStatus(board) {
 
     board.forEach((row) => {
       row.forEach((tile) => {
+        if (tile.status === TITLE_STATUSES.MARKED) markTile(tile)
         if (tile.mine) revealTile(board, tile)
       })
     })
