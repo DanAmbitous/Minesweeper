@@ -1,6 +1,6 @@
 //Logic
 
-const TITLE_STATUSES = {
+export const TITLE_STATUSES = {
   HIDDEN: "hidden",
   MINE: "mine",
   NUMBER: "number",
@@ -29,10 +29,6 @@ export function createBoard(boardSize, numberOfMines) {
         set status(value) {
           this.element.dataset.status = value
         },
-      }
-
-      if (tile.mine) {
-        tile.element.dataset.status = TITLE_STATUSES.MINE
       }
 
       row.push(tile)
@@ -81,4 +77,38 @@ export function markTile(tile) {
   } else {
     tile.status = TITLE_STATUSES.MARKED
   }
+}
+
+export function revealTile(board, tile) {
+  if (tile.status !== TITLE_STATUSES.HIDDEN) {
+    return
+  }
+
+  if (tile.mine) {
+    tile.status = TITLE_STATUSES.MINE
+    return
+  }
+
+  tile.status = TITLE_STATUSES.NUMBER
+
+  const adjacentTiles = nearByTiles(board, tile)
+  const mines = adjacentTiles.filter((t) => t.mine)
+
+  if (mines.length === 0) {
+  } else {
+    tile.element.textContent = mines.length
+  }
+}
+
+function nearByTiles(board, { x, y }) {
+  const tiles = []
+
+  for (let xOffset = -1; xOffset <= 1; xOffset++) {
+    for (let yOffset = -1; yOffset <= 1; yOffset++) {
+      const tile = board[x + xOffset]?.[y + yOffset]
+      if (tile) tiles.push(tile)
+    }
+  }
+
+  return tiles
 }
