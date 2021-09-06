@@ -1,20 +1,33 @@
-import { createBoard } from "./minesweeper.js"
+import { boardCreation } from "./minesweeper.js"
+
+let BOARD_SIZE = 5
 
 const boardElement = document.querySelector(".board")
+boardElement.style.setProperty("--size", BOARD_SIZE)
 
-const BOARD_X_AND_Y_DISTANCE = 10
-const MINE_QUANTITY = 10
-
-const board = createBoard(BOARD_X_AND_Y_DISTANCE, MINE_QUANTITY)
-
-boardElement.style.setProperty("--size", BOARD_X_AND_Y_DISTANCE)
+let board = boardCreation(BOARD_SIZE)
 
 board.forEach((row) => {
-  console.log(row)
-
   row.forEach((tile) => {
-    boardElement.append(tile.element)
+    boardElement.append(tile.tileElement)
   })
 })
 
-console.log(board)
+document.addEventListener("input", (e) => {
+  const tiles = Array.from(boardElement.children)
+
+  tiles.forEach((tile) => {
+    tile.remove()
+  })
+
+  BOARD_SIZE = e.target.value
+
+  board = boardCreation(BOARD_SIZE)
+  boardElement.style.setProperty("--size", BOARD_SIZE)
+
+  board.forEach((row) => {
+    row.forEach((tile) => {
+      boardElement.append(tile.tileElement)
+    })
+  })
+})
