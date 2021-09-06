@@ -58,3 +58,8 @@ body {
 .board > [data-status="marked"] {
   background-color: yellow;
 }
+
+input {
+  cursor: pointer;
+}
+
