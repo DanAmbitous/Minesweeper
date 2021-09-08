@@ -5,15 +5,13 @@ export const TILE_STATUSES = {
   MARKED: "marked",
 }
 
-export function boardCreation(size, mineQuantity) {
+export function boardCreation(boardSize, mineQuantity) {
   const board = []
 
-  const minePositions = getMinePosition(size, mineQuantity)
-
-  for (let x = 0; x < size; x++) {
+  for (let x = 0; x < boardSize; x++) {
     const row = []
 
-    for (let y = 0; y < size; y++) {
+    for (let y = 0; y < boardSize; y++) {
       const tileElement = document.createElement("div")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
 
@@ -21,17 +19,6 @@ export function boardCreation(size, mineQuantity) {
         tileElement,
         x,
         y,
-        mine: minePositions.some(positionMatch.bind(null, { x, y })),
-        get status() {
-          return this.tileElement.dataset.status
-        },
-        set status(value) {
-          this.tileElement.dataset.status = value
-        },
-      }
-
-      if (tile.mine) {
-        tile.tileElement.style.backgroundColor = "red"
       }
 
       row.push(tile)
@@ -43,43 +30,18 @@ export function boardCreation(size, mineQuantity) {
   return board
 }
 
-function getMinePosition(boardSize, minesQuantity) {
-  const positions = []
+export function tileMarking(e, mineQuantity, mineNumberShower) {
+  if (e.target.dataset.status === TILE_STATUSES.HIDDEN) {
+    e.target.dataset.status = TILE_STATUSES.MARKED
 
-  while (positions.length < minesQuantity) {
-    const position = {
-      x: randomNumber(boardSize),
-      y: randomNumber(boardSize),
-    }
+    mineNumberShower.innerText = Number(mineNumberShower.innerText) - 1
+  } else if (e.target.dataset.status === TILE_STATUSES.MARKED) {
+    mineNumberShower.innerText = Number(mineNumberShower.innerText) + 1
 
-    //Checking to make sure that the positions aren't a match
-    if (!positions.some((p) => positionMatch(p, position))) {
-      positions.push(position)
-    }
-  }
-
-  return positions
-}
-
-export function markTile(tile) {
-  if (
-    tile.status !== TILE_STATUSES.HIDDEN &&
-    tile.status !== TILE_STATUSES.MARKED
-  ) {
-    return
-  }
-
-  if (tile.status === TILE_STATUSES.MARKED) {
-    tile.status = TILE_STATUSES.HIDDEN
-  } else {
-    tile.status = TILE_STATUSES.MARKED
+    e.target.dataset.status = TILE_STATUSES.HIDDEN
   }
 }
 
-function positionMatch(positionA, positionB) {
-  return positionA.x === positionB.x && positionA.y === positionB.y
-}
-
-function randomNumber(size) {
-  return Math.floor(Math.random() * size)
+export function mineCount(mineQuantity, mineNumberDisplayment) {
+  mineNumberDisplayment.innerText = mineQuantity
 }
