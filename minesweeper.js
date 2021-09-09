@@ -8,6 +8,8 @@ export const TILE_STATUSES = {
 export function boardCreation(boardSize, mineQuantity) {
   const board = []
 
+  const minePositions = getMinePositions(boardSize, mineQuantity)
+  console.log(minePositions)
   for (let x = 0; x < boardSize; x++) {
     const row = []
 
@@ -18,6 +20,7 @@ export function boardCreation(boardSize, mineQuantity) {
       const tile = {
         tileElement,
         x,
+        mine: true,
         y,
       }
 
@@ -30,7 +33,13 @@ export function boardCreation(boardSize, mineQuantity) {
   return board
 }
 
-export function tileMarking(e, mineQuantity, mineNumberShower) {
+export function tileRevealing(e) {
+  if (e.target.dataset.status === TILE_STATUSES.HIDDEN) {
+    return (e.target.dataset.status = TILE_STATUSES.NUMBER)
+  }
+}
+
+export function tileMarking(e, mineNumberShower) {
   if (e.target.dataset.status === TILE_STATUSES.HIDDEN) {
     e.target.dataset.status = TILE_STATUSES.MARKED
 
@@ -44,4 +53,29 @@ export function tileMarking(e, mineQuantity, mineNumberShower) {
 
 export function mineCount(mineQuantity, mineNumberDisplayment) {
   mineNumberDisplayment.innerText = mineQuantity
+}
+
+function getMinePositions(boardSize, mineQuantity) {
+  const positions = []
+
+  while (positions.length < mineQuantity) {
+    const position = {
+      x: randomNumber(boardSize),
+      y: randomNumber(boardSize),
+    }
+
+    if (!positions.some((p) => positionMatch(p, position))) {
+      positions.push(position)
+    }
+  }
+
+  return positions
+}
+
+function positionMatch(a, b) {
+  return a.x === b.x && a.y === b.y
+}
+
+function randomNumber(size) {
+  return Math.floor(Math.random() * size)
 }
