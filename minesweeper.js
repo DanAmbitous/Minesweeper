@@ -9,7 +9,7 @@ export function boardCreation(boardSize, mineQuantity) {
   const board = []
 
   const minePositions = getMinePositions(boardSize, mineQuantity)
-  console.log(minePositions)
+
   for (let x = 0; x < boardSize; x++) {
     const row = []
 
@@ -20,8 +20,14 @@ export function boardCreation(boardSize, mineQuantity) {
       const tile = {
         tileElement,
         x,
-        mine: true,
+        mine: minePositions.some(positionMatch.bind(null, { x, y })),
         y,
+        get status() {
+          return this.element.dataset.status
+        },
+        set status(value) {
+          this.element.dataset.status = value
+        },
       }
 
       row.push(tile)
@@ -33,9 +39,14 @@ export function boardCreation(boardSize, mineQuantity) {
   return board
 }
 
-export function tileRevealing(e) {
-  if (e.target.dataset.status === TILE_STATUSES.HIDDEN) {
-    return (e.target.dataset.status = TILE_STATUSES.NUMBER)
+export function tileRevealing(tile) {
+  if (tile.tileElement.dataset.status === "hidden" && !tile.mine) {
+    tile.tileElement.dataset.status = TILE_STATUSES.NUMBER
+  }
+
+  if (tile.mine) {
+    tile.tileElement.dataset.status = TILE_STATUSES.MINE
+    return
   }
 }
 
@@ -64,7 +75,7 @@ function getMinePositions(boardSize, mineQuantity) {
       y: randomNumber(boardSize),
     }
 
-    if (!positions.some((p) => positionMatch(p, position))) {
+    if (!positions.some(positionMatch.bind(null, position))) {
       positions.push(position)
     }
   }
