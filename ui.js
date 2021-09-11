@@ -17,11 +17,8 @@ function boardRealization() {
       tile.tileElement.addEventListener("contextmenu", (e) => {
         e.preventDefault()
 
-        minesLeftIndicator.textContent = tileMarking(
-          e.target,
-          MINE_NUMBER,
-          boardContainer
-        )
+        minesLeftIndicator.textContent =
+          MINE_NUMBER - tileMarking(e.target, boardContainer)
       })
 
       boardContainer.append(tile.tileElement)

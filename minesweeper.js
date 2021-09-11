@@ -84,18 +84,16 @@ function mineLocationVerification(p, { x, y }) {
   }
 }
 
-export function tileMarking(e, mineNumber, boardContainer) {
+export function tileMarking(e, boardContainer) {
   const tiles = [...boardContainer.children]
-  tiles.forEach((tile) => {
-    console.log(tile.dataset.status)
-  })
-  const numberOfMarkedTiles = tiles.filter(
-    (tile) => tile.dataset.status === TILE_STATUSES.MARKED
-  )
-  console.log(numberOfMarkedTiles)
+
+  const numberOfMarkedTiles =
+    tiles.filter((tile) => tile.dataset.status === TILE_STATUSES.MARKED)
+      .length + 1
+
   e.dataset.status = TILE_STATUSES.MARKED
 
-  return mineNumber
+  return numberOfMarkedTiles
 }
 
 // export const TILE_STATUSES = {
