@@ -12,8 +12,12 @@ export function populateBoard(boardDimensions, mineNumber) {
   const board = [] //The board itself, stores rows and tiles
 
   const minePositions = mineCreation(boardDimensions, mineNumber)
-  console.log(minePositions)
+  const minePositionsClone = [...minePositions]
+  minePositions[0] = { x: 12, y: 12 }
+  console.log(minePositions, minePositionsClone)
 
+  const match = minePositionsClone.filter((p) => minePositions.includes(p))
+  console.log(match)
   for (let x = 0; x < boardDimensions; x++) {
     const rows = [] //Contains each row which contain tiles
 
@@ -56,10 +60,16 @@ function mineCreation(boardDimensions, mineNumber) {
       y: randomMinePosition(boardDimensions),
     }
 
-    minePositions.push(position)
+    if (!minePositions.some((p) => positionVerification(p, position))) {
+      minePositions.push(position)
+    }
   }
 
   return minePositions
+}
+
+function positionVerification(p1, p2) {
+  return p1.x === p2.x && p1.y === p2.y
 }
 
 function randomMinePosition(boardDimensions) {
