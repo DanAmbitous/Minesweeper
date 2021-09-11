@@ -84,16 +84,20 @@ function mineLocationVerification(p, { x, y }) {
   }
 }
 
-export function tileMarking(e, boardContainer) {
-  const tiles = [...boardContainer.children]
+export function tileMarking(
+  e,
 
-  const numberOfMarkedTiles =
-    tiles.filter((tile) => tile.dataset.status === TILE_STATUSES.MARKED)
-      .length + 1
+  minesLeftIndicator
+) {
+  if (e.dataset.status === TILE_STATUSES.HIDDEN) {
+    e.dataset.status = TILE_STATUSES.MARKED
 
-  e.dataset.status = TILE_STATUSES.MARKED
+    return Number(minesLeftIndicator.textContent) - 1
+  } else {
+    e.dataset.status = TILE_STATUSES.HIDDEN
 
-  return numberOfMarkedTiles
+    return Number(minesLeftIndicator.textContent) + 1
+  }
 }
 
 // export const TILE_STATUSES = {
