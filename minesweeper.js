@@ -11,8 +11,8 @@ export const TILE_STATUSES = {
 export function populateBoard(boardDimensions, mineNumber) {
   const board = [] //The board itself, stores rows and tiles
 
-  //Stores the positions of all of the mines that are also verifed to be unique
-  const mineLocations = mineLocationPicker(boardDimensions, mineNumber)
+  const minePositions = mineCreation(boardDimensions, mineNumber)
+  console.log(minePositions)
 
   for (let x = 0; x < boardDimensions; x++) {
     const rows = [] //Contains each row which contain tiles
@@ -25,10 +25,15 @@ export function populateBoard(boardDimensions, mineNumber) {
       const tile = {
         //The tile element itself
         tileElement,
-        //The x position starts from 0L
+        mine: true,
+        //The x position starts from 0
         x,
-        //The y position starts from 0L
+        //The y position starts from 0
         y,
+      }
+
+      if (tile.mine) {
+        tile.tileElement.dataset.status = TILE_STATUSES.MINE
       }
 
       rows.push(tile)
@@ -42,24 +47,24 @@ export function populateBoard(boardDimensions, mineNumber) {
   return board
 }
 
-function mineLocationPicker(boardDimensions, mineNumber) {
+function mineCreation(boardDimensions, mineNumber) {
   const minePositions = []
 
   while (minePositions.length < mineNumber) {
     const position = {
-      //Assigns the x and y locations of the mines
-      x: randomMineLocationPicker(boardDimensions),
-      y: randomMineLocationPicker(boardDimensions),
+      x: randomMinePosition(boardDimensions),
+      y: randomMinePosition(boardDimensions),
     }
 
-    //pushes it to the array which contains a list of the position of the mines
     minePositions.push(position)
   }
 
   return minePositions
 }
 
-function randomMineLocationPicker(boardDimensions) {}
+function randomMinePosition(boardDimensions) {
+  return Math.floor(Math.random() * boardDimensions)
+}
 
 // export const TILE_STATUSES = {
 //   HIDDEN: "hidden",
