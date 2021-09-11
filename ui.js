@@ -20,7 +20,7 @@ board.forEach((row) => {
     boardContainer.append(tile.tileElement)
 
     tile.tileElement.addEventListener("click", () => {
-      tileRevealing(tile)
+      tileRevealing(board, tile)
     })
     tile.tileElement.addEventListener("contextmenu", (e) => {
       e.preventDefault()
