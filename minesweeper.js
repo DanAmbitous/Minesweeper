@@ -11,6 +11,7 @@ export const TILE_STATUSES = {
 export function populateBoard(boardDimensions, mineNumber) {
   const board = [] //The board itself, stores rows and tiles
 
+  //Saves a list of mine positions, their locations verifed to be unique
   const minePositions = mineCreation(boardDimensions, mineNumber)
 
   for (let x = 0; x < boardDimensions; x++) {
@@ -47,19 +48,25 @@ export function populateBoard(boardDimensions, mineNumber) {
 }
 
 function mineCreation(boardDimensions, mineNumber) {
+  //For verfied mine positions to be stored
   const minePositions = []
 
+  //To do the loop while the array has less number of mines when the needed number of mines
   while (minePositions.length < mineNumber) {
+    //The location of the mine
     const position = {
+      //Selects a random position from a calculation that uses the board's size
       x: randomMinePosition(boardDimensions),
       y: randomMinePosition(boardDimensions),
     }
 
+    //Checks from the array to see if the mine position already exists or not if does when doesn't do anything if not when adds it to the array, it returns a boolean
     if (!minePositions.some((p) => positionVerification(p, position))) {
       minePositions.push(position)
     }
   }
 
+  //Finally after the loop's over, the function'll return the array which contains all the verfied positions back
   return minePositions
 }
 
@@ -72,11 +79,23 @@ function randomMinePosition(boardDimensions) {
 }
 
 function mineLocationVerification(p, { x, y }) {
-  console.log(p, { x, y })
-
   if (p.x === x && p.y === y) {
     return true
   }
+}
+
+export function tileMarking(e, mineNumber, boardContainer) {
+  const tiles = [...boardContainer.children]
+  tiles.forEach((tile) => {
+    console.log(tile.dataset.status)
+  })
+  const numberOfMarkedTiles = tiles.filter(
+    (tile) => tile.dataset.status === TILE_STATUSES.MARKED
+  )
+  console.log(numberOfMarkedTiles)
+  e.dataset.status = TILE_STATUSES.MARKED
+
+  return mineNumber
 }
 
 // export const TILE_STATUSES = {
