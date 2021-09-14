@@ -1,4 +1,4 @@
-import { populateBoard, tileMarking } from "./minesweeper.js"
+import { populateBoard, tileMarking, tileRevealing } from "./minesweeper.js"
 
 const BOARD_SIZE = 5
 const MINE_NUMBER = 5
@@ -14,6 +14,9 @@ boardRealization()
 function boardRealization() {
   board.forEach((row) => {
     row.forEach((tile) => {
+      tile.tileElement.addEventListener("click", (e) => {
+        tileRevealing(e)
+      })
       tile.tileElement.addEventListener("contextmenu", (e) => {
         e.preventDefault()
 

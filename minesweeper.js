@@ -93,10 +93,18 @@ export function tileMarking(
     e.dataset.status = TILE_STATUSES.MARKED
 
     return Number(minesLeftIndicator.textContent) - 1
-  } else {
+  } else if (e.dataset.status !== TILE_STATUSES.NUMBER) {
     e.dataset.status = TILE_STATUSES.HIDDEN
 
     return Number(minesLeftIndicator.textContent) + 1
+  }
+}
+
+export function tileRevealing(e) {
+  console.log(e.target)
+  if (e.target.dataset.status === "hidden") {
+    console.log("hi")
+    e.target.dataset.status = TILE_STATUSES.NUMBER
   }
 }
 
