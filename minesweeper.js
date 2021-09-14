@@ -123,13 +123,14 @@ export function tileMarking(e, minesLeftIndicator, MINE_NUMBER) {
   minesLeftIndicator.textContent = MINE_NUMBER - markedTiles.length
 }
 
-export function tileRevealing(e) {
+export function tileRevealing(e, minesLeftIndicator, MINE_NUMBER, board, tile) {
+  tileIntel(board, tile)
+
   if (
     e.target.dataset.status === "hidden" ||
     e.target.dataset.status === "marked"
   ) {
     e.target.dataset.status = "number"
-    gameConditionChecker(true)
 
     if (e.target.dataset.status === "marked") {
       tileMarking(e, minesLeftIndicator, MINE_NUMBER)
@@ -148,6 +149,20 @@ function gameConditionChecker(victory) {
   } else {
     console.log("Bitter defeat")
   }
+}
+
+function tileIntel(board, { x, y }) {
+  const tiles = []
+
+  for (let tileX = -1; tileX <= 1; tileX++) {
+    for (let tileY = -1; tileY <= 1; tileY++) {
+      const tile = board[x + tileX]?.[y + tileY]
+
+      tiles.push(tile)
+    }
+  }
+
+  return tiles
 }
 
 // export const TILE_STATUSES = {
