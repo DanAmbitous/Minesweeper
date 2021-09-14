@@ -84,27 +84,60 @@ function mineLocationVerification(p, { x, y }) {
   }
 }
 
-export function tileMarking(
-  e,
+export function tileMarking(e, minesLeftIndicator, MINE_NUMBER) {
+  const board = e.target.parentElement
 
-  minesLeftIndicator
-) {
-  if (e.dataset.status === TILE_STATUSES.HIDDEN) {
-    e.dataset.status = TILE_STATUSES.MARKED
+  let markedTiles = []
+  let unmarkedTiles = []
 
-    return Number(minesLeftIndicator.textContent) - 1
-  } else if (e.dataset.status !== TILE_STATUSES.NUMBER) {
-    e.dataset.status = TILE_STATUSES.HIDDEN
+  if (
+    e.target.dataset.status !== "marked" &&
+    e.target.dataset.status !== "number"
+  ) {
+    e.target.dataset.status = "marked"
 
-    return Number(minesLeftIndicator.textContent) + 1
+    Array.from(board.children).forEach((tile) => {
+      if (tile.dataset.status === "marked") {
+        markedTiles.push(tile)
+      } else {
+        unmarkedTiles.push(tile)
+      }
+    })
+
+    minesLeftIndicator.textContent = MINE_NUMBER - markedTiles.length
+  } else if (e.target.dataset.status === "marked") {
+    e.target.dataset.status = "hidden"
+
+    markedTiles = []
+    unmarkedTiles = []
+
+    Array.from(board.children).forEach((tile) => {
+      if (tile.dataset.status === "marked") {
+        markedTiles.push(tile)
+      } else {
+        unmarkedTiles.push(tile)
+      }
+    })
   }
+
+  minesLeftIndicator.textContent = MINE_NUMBER - markedTiles.length
 }
 
 export function tileRevealing(e) {
-  console.log(e.target)
-  if (e.target.dataset.status === "hidden") {
-    console.log("hi")
-    e.target.dataset.status = TILE_STATUSES.NUMBER
+  if (
+    e.target.dataset.status === "hidden" ||
+    e.target.dataset.status === "marked"
+  ) {
+    e.target.dataset.status = "number"
+    // gameConditionChecker()
+
+    if (e.target.dataset.status === "marked") {
+    }
+  }
+
+  if (e.target.dataset.status === "mine") {
+    console.log("You've hit a mine")
+    // gameConditionChecker()
   }
 }
 

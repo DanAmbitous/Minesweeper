@@ -15,16 +15,12 @@ function boardRealization() {
   board.forEach((row) => {
     row.forEach((tile) => {
       tile.tileElement.addEventListener("click", (e) => {
-        tileRevealing(e)
+        tileRevealing(e, minesLeftIndicator)
       })
       tile.tileElement.addEventListener("contextmenu", (e) => {
         e.preventDefault()
 
-        minesLeftIndicator.textContent = tileMarking(
-          e.target,
-
-          minesLeftIndicator
-        )
+        tileMarking(e, minesLeftIndicator, MINE_NUMBER)
       })
 
       boardContainer.append(tile.tileElement)
