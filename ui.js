@@ -15,7 +15,7 @@ function boardRealization() {
   board.forEach((row) => {
     row.forEach((tile) => {
       tile.tileElement.addEventListener("click", (e) => {
-        tileRevealing(e, minesLeftIndicator)
+        tileRevealing(e, minesLeftIndicator, MINE_NUMBER)
       })
       tile.tileElement.addEventListener("contextmenu", (e) => {
         e.preventDefault()

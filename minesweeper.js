@@ -129,15 +129,24 @@ export function tileRevealing(e) {
     e.target.dataset.status === "marked"
   ) {
     e.target.dataset.status = "number"
-    // gameConditionChecker()
+    gameConditionChecker(true)
 
     if (e.target.dataset.status === "marked") {
+      tileMarking(e, minesLeftIndicator, MINE_NUMBER)
     }
   }
 
   if (e.target.dataset.status === "mine") {
     console.log("You've hit a mine")
-    // gameConditionChecker()
+    gameConditionChecker(false)
+  }
+}
+
+function gameConditionChecker(victory) {
+  if (victory) {
+    console.log("Sweet victory")
+  } else {
+    console.log("Bitter defeat")
   }
 }
 
