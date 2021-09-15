@@ -124,7 +124,17 @@ export function tileMarking(e, minesLeftIndicator, MINE_NUMBER) {
 }
 
 export function tileRevealing(e, minesLeftIndicator, MINE_NUMBER, board, tile) {
-  tileIntel(board, tile)
+  //Gets the surrounding tiles and adds them into an array
+  const adjacentTiles = tileIntel(board, tile)
+  console.log(adjacentTiles)
+  //Checks to see if any of the tiles are mine if so it adds it a tile for mines
+  const mines = adjacentTiles.filter((tile) => tile.mine)
+
+  if (mines.length === 0) {
+    e.target.textContent = ""
+  } else {
+    e.target.textContent = mines.length
+  }
 
   if (
     e.target.dataset.status === "hidden" ||
@@ -158,7 +168,9 @@ function tileIntel(board, { x, y }) {
     for (let tileY = -1; tileY <= 1; tileY++) {
       const tile = board[x + tileX]?.[y + tileY]
 
-      tiles.push(tile)
+      if (tile) {
+        tiles.push(tile)
+      }
     }
   }
 
