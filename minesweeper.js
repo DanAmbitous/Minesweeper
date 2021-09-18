@@ -18,21 +18,17 @@ export function tileCreation(boardSize, numberOfMines) {
 
       const tile = {
         tileElement,
+        x,
+        y,
         mine: minePositions.some((arrayPosition) =>
           positionMatch(arrayPosition, { x, y })
         ),
-        x,
-        y,
         get status() {
           return this.tileElement.dataset.status
         },
         set status(value) {
           this.tileElement.dataset.status = value
         },
-      }
-
-      if (tile.mine) {
-        tile.tileElement.style.background = "red"
       }
 
       row.push(tile)
@@ -52,6 +48,27 @@ export function tileRevealing(tile, board) {
       })
     })
   }
+}
+
+export function tileMarking(tile, board, mineQuantityIndicator) {
+  tile.tileElement.dataset.status = TILE_STATUSES.MARKED
+
+  const markedTiles = []
+  const minedTiles = []
+
+  board.forEach((row) => {
+    row.forEach((tile) => {
+      if (tile.mine) {
+        minedTiles.push(tile.tileElement)
+      }
+
+      if (tile.tileElement.dataset.status === "marked") {
+        markedTiles.push(tile.tileElement)
+      }
+    })
+  })
+
+  mineQuantityIndicator.textContent = minedTiles.length - markedTiles.length
 }
 
 function createMineLocations(boardSize, numberOfMines) {
@@ -80,7 +97,3 @@ function positionMatch(a, b) {
 function randomPosition(boardSize) {
   return Math.floor(Math.random() * boardSize)
 }
-
-const array = [1, 2, 3, 4, 5]
-
-// console.log(array.some((number) => console.log(number)))
