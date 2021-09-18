@@ -51,7 +51,11 @@ export function tileRevealing(tile, board) {
 }
 
 export function tileMarking(tile, board, mineQuantityIndicator) {
-  tile.tileElement.dataset.status = TILE_STATUSES.MARKED
+  if (tile.tileElement.dataset.status === "hidden") {
+    tile.tileElement.dataset.status = TILE_STATUSES.MARKED
+  } else if (tile.tileElement.dataset.status === "marked") {
+    tile.tileElement.dataset.status = TILE_STATUSES.HIDDEN
+  }
 
   const markedTiles = []
   const minedTiles = []
