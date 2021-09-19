@@ -31,10 +31,6 @@ export function tileCreation(boardSize, numberOfMines) {
         },
       }
 
-      if (tile.mine) {
-        tile.tileElement.style.background = "red"
-      }
-
       row.push(tile)
     }
 
@@ -44,7 +40,7 @@ export function tileCreation(boardSize, numberOfMines) {
   return board
 }
 
-export function tileRevealing(tile, board) {
+export function tileRevealing(tile, board, mineQuantityIndicator) {
   if (tile.status != "hidden") {
     return
   }
@@ -74,13 +70,15 @@ export function tileRevealing(tile, board) {
     if (numberOfMinedTiles.length === 0) {
       nearbyTiles.forEach((tile) => {
         if (tile != null) {
-          tileRevealing(tile, board)
+          tileRevealing(tile, board, mineQuantityIndicator)
         }
       })
     } else {
       tile.tileElement.textContent = numberOfMinedTiles.length
     }
   }
+
+  gameResolutionChecker(tile, board, mineQuantityIndicator)
 }
 
 export function tileMarking(tile, board, mineQuantityIndicator) {
@@ -133,4 +131,46 @@ function positionMatch(a, b) {
 
 function randomPosition(boardSize) {
   return Math.floor(Math.random() * boardSize)
+}
+
+function gameResolutionChecker(tile, board, mineQuantityIndicator) {
+  if (tile.status === "mine") {
+    mineQuantityIndicator.textContent = "Hit a mine!"
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.mine) {
+          tile.status = "mine"
+        }
+      })
+    })
+  } else {
+    const numberOfTiles = []
+    const numberTiles = []
+    const numberMinedTiles = []
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        numberOfTiles.push(tile)
+
+        if (tile.mine) {
+          numberMinedTiles.push(tile)
+        }
+
+        if (tile.status === TILE_STATUSES.NUMBER) {
+          numberTiles.push(tile)
+        }
+      })
+    })
+
+    console.log(numberTiles.length + numberMinedTiles.length)
+
+    if (numberTiles.length + numberMinedTiles.length === numberOfTiles.length) {
+      mineQuantityIndicator.textContent = "Alegría has ganado"
+
+      numberMinedTiles.forEach((tile) => {
+        tile.status = TILE_STATUSES.MARKED
+      })
+    }
+  }
 }
