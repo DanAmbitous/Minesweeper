@@ -1,7 +1,7 @@
 import { tileCreation, tileRevealing, tileMarking } from "./minesweeper.js"
 
-const BOARD_SIZE = 5
-const MINE_QUANTITY = 5
+const BOARD_SIZE = 10
+const MINE_QUANTITY = 10
 
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", BOARD_SIZE)
