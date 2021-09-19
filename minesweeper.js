@@ -49,27 +49,27 @@ export function tileRevealing(tile, board) {
     return
   }
 
-  if (tile.mine) {
-    tile.status = TILE_STATUSES.MINE
+  const nearbyTiles = []
+  const numberOfMinedTiles = []
 
-    const nearbyTiles = []
-    const numberOfMinedTiles = []
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      nearbyTiles.push(board[tile.x + x]?.[tile.y + y])
+    }
+  }
 
-    for (let x = -1; x <= 1; x++) {
-      for (let y = -1; y <= 1; y++) {
-        nearbyTiles.push(board[tile.x + x]?.[tile.y + y])
+  nearbyTiles.forEach((tile) => {
+    if (tile != undefined) {
+      if (tile.mine) {
+        numberOfMinedTiles.push(tile)
       }
     }
+  })
 
-    nearbyTiles.forEach((tile) => {
-      if (tile != undefined) {
-        if (tile.mine) {
-          numberOfMinedTiles.push(tile)
-        }
-      }
-    })
+  tile.tileElement.textContent = numberOfMinedTiles.length
 
-    console.log(numberOfMinedTiles.length)
+  if (tile.mine) {
+    tile.status = TILE_STATUSES.MINE
   } else {
     tile.status = TILE_STATUSES.NUMBER
   }
