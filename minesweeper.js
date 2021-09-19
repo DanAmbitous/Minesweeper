@@ -31,6 +31,10 @@ export function tileCreation(boardSize, numberOfMines) {
         },
       }
 
+      if (tile.mine) {
+        tile.tileElement.style.background = "red"
+      }
+
       row.push(tile)
     }
 
@@ -41,20 +45,41 @@ export function tileCreation(boardSize, numberOfMines) {
 }
 
 export function tileRevealing(tile, board) {
+  if (tile.status != "hidden") {
+    return
+  }
+
   if (tile.mine) {
-    board.forEach((row) => {
-      row.forEach((tile) => {
-        tile.tileElement.style.backgroundColor = "red"
-      })
+    tile.status = TILE_STATUSES.MINE
+
+    const nearbyTiles = []
+    const numberOfMinedTiles = []
+
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
+        nearbyTiles.push(board[tile.x + x]?.[tile.y + y])
+      }
+    }
+
+    nearbyTiles.forEach((tile) => {
+      if (tile != undefined) {
+        if (tile.mine) {
+          numberOfMinedTiles.push(tile)
+        }
+      }
     })
+
+    console.log(numberOfMinedTiles.length)
+  } else {
+    tile.status = TILE_STATUSES.NUMBER
   }
 }
 
 export function tileMarking(tile, board, mineQuantityIndicator) {
-  if (tile.tileElement.dataset.status === "hidden") {
-    tile.tileElement.dataset.status = TILE_STATUSES.MARKED
-  } else if (tile.tileElement.dataset.status === "marked") {
-    tile.tileElement.dataset.status = TILE_STATUSES.HIDDEN
+  if (tile.status === "hidden") {
+    tile.status = TILE_STATUSES.MARKED
+  } else if (tile.status === "marked") {
+    tile.status = TILE_STATUSES.HIDDEN
   }
 
   const markedTiles = []
