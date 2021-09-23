@@ -1,7 +1,12 @@
-import { tileCreation, tileRevealing, tileMarking } from "./minesweeper.js"
+import {
+  tileCreation,
+  tileRevealing,
+  tileMarking,
+  TILE_STATUSES,
+} from "./minesweeper.js"
 
-const BOARD_SIZE = 10
-const MINE_QUANTITY = 10
+const BOARD_SIZE = 5
+const MINE_QUANTITY = 1
 
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", BOARD_SIZE)
@@ -14,8 +19,9 @@ board.forEach((row) => {
   row.forEach((tile) => {
     boardContainer.append(tile.tileElement)
 
-    tile.tileElement.addEventListener("click", (e) => {
-      tileRevealing(tile, board, mineQuantityIndicator)
+    tile.tileElement.addEventListener("click", () => {
+      tileRevealing(tile, board, mineQuantityIndicator, boardContainer)
+      gameResolutionChecker(tile, board, mineQuantityIndicator, boardContainer)
     })
     tile.tileElement.addEventListener("contextmenu", (e) => {
       e.preventDefault()
@@ -24,3 +30,46 @@ board.forEach((row) => {
     })
   })
 })
+
+function gameResolutionChecker(tile, board, mineQuantityIndicator) {
+  if (tile.status === "mine") {
+    mineQuantityIndicator.textContent = "Hit a mine!"
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.mine) {
+          tile.status = "mine"
+        }
+        console.log(tile.tileElement)
+        // tile.tileElement.removeEventListener("click", tileRevealing)
+        tile.tileElement.style.opacity = 0.5
+      })
+    })
+  } else {
+    const numberOfTiles = []
+    const numberTiles = []
+    const numberMinedTiles = []
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        numberOfTiles.push(tile)
+
+        if (tile.mine) {
+          numberMinedTiles.push(tile)
+        }
+
+        if (tile.status === TILE_STATUSES.NUMBER) {
+          numberTiles.push(tile)
+        }
+      })
+    })
+
+    if (numberTiles.length + numberMinedTiles.length === numberOfTiles.length) {
+      mineQuantityIndicator.textContent = "Alegría has ganado"
+
+      numberMinedTiles.forEach((tile) => {
+        tile.status = TILE_STATUSES.MARKED
+      })
+    }
+  }
+}
