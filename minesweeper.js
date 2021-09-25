@@ -74,6 +74,7 @@ export function tileMarking(tile, board, mineQuantityInsight, MINE_QUANTITY) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
     tile.status = TILE_STATUSES.MARKED
   } else if (tile.status === TILE_STATUSES.MARKED) {
+    tile.status = TILE_STATUSES.HIDDEN
   }
 
   board.forEach((row) => {
