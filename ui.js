@@ -1,10 +1,13 @@
-import { boardPopulation, tileRevealing } from "./minesweeper.js"
+import { boardPopulation, tileRevealing, tileMarking } from "./minesweeper.js"
 
 const BOARD_DIMENSIONS = 5
 const MINE_QUANTITY = 5
 
 const boardElement = document.querySelector(".board")
 boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
+
+const mineQuantityInsight = document.querySelector("#mine-count")
+mineQuantityInsight.textContent = MINE_QUANTITY
 
 const boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
 
@@ -14,6 +17,11 @@ boardCreation.forEach((row) => {
 
     tile.tileElement.addEventListener("click", (e) => {
       tileRevealing(tile, boardCreation)
+    })
+    tile.tileElement.addEventListener("contextmenu", (e) => {
+      e.preventDefault()
+
+      tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
     })
   })
 })

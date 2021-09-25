@@ -59,13 +59,34 @@ export function boardPopulation(boardDimensions, mineQuantity) {
 export function tileRevealing(tile, board) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
-      console.log("Hit a mine")
+      gameResolution(tile, board)
     } else {
       tile.status = TILE_STATUSES.NUMBER
 
       mineDistanceCalculation(tile, board)
     }
   }
+}
+
+export function tileMarking(tile, board, mineQuantityInsight, MINE_QUANTITY) {
+  const markedTiles = []
+
+  if (tile.status === TILE_STATUSES.HIDDEN) {
+    tile.status = TILE_STATUSES.MARKED
+  } else if (tile.status === TILE_STATUSES.MARKED) {
+  }
+
+  board.forEach((row) => {
+    row.forEach((tile) => {
+      if (tile.status === TILE_STATUSES.MARKED) {
+        markedTiles.push(tile)
+      }
+    })
+  })
+
+  mineQuantityInsight.textContent = Number(MINE_QUANTITY - markedTiles.length)
+
+  console.log(markedTiles)
 }
 
 function mineDistanceCalculation(tile, board) {
@@ -89,6 +110,16 @@ function mineDistanceCalculation(tile, board) {
   })
 
   tile.tileElement.textContent = surroundingMines.length
+
+  gameResolution(tile, board)
+}
+
+function gameResolution(tile, board) {
+  if (tile.mine) {
+    console.log("A pyrrhic defeat")
+  } else {
+    console.log("A grand victory!")
+  }
 }
 
 function mineLocation(boardDimensions, mineQuantity) {
