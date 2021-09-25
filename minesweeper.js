@@ -32,7 +32,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
         mine,
         tileElement,
         get status() {
-          return this.tileElement.dataset
+          return this.tileElement.dataset.status
         },
         set status(condition) {
           console.log(condition)
@@ -58,7 +58,16 @@ export function boardPopulation(boardDimensions, mineQuantity) {
 }
 
 export function tileRevealing(tile) {
-  tile.status = TILE_STATUSES.MARKED
+  console.log(tile.status)
+  if (tile.status === TILE_STATUSES.HIDDEN) {
+    console.log("hi")
+    if (tile.mine) {
+      console.log("Hit a mine")
+    } else {
+      console.log("hi")
+      tile.status = TILE_STATUSES.NUMBER
+    }
+  }
 }
 
 function mineLocation(boardDimensions, mineQuantity) {
