@@ -35,7 +35,6 @@ export function boardPopulation(boardDimensions, mineQuantity) {
           return this.tileElement.dataset.status
         },
         set status(condition) {
-          console.log(condition)
           this.tileElement.dataset.status = condition
         },
       }
@@ -49,7 +48,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   board.forEach((row) => {
     row.forEach((tile) => {
       if (tile.mine) {
-        tile.tileElement.style.backgroundColor = "red"
+        // tile.tileElement.style.backgroundColor = "red"
       }
     })
   })
@@ -58,7 +57,6 @@ export function boardPopulation(boardDimensions, mineQuantity) {
 }
 
 export function tileRevealing(tile, board) {
-  console.log(tile.status)
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
       console.log("Hit a mine")
@@ -72,16 +70,25 @@ export function tileRevealing(tile, board) {
 
 function mineDistanceCalculation(tile, board) {
   const neighbouringTiles = []
+  const surroundingMines = []
 
-  for (let x = -1; x < 1; x++) {
-    for (let y = -1; y < 1; y++) {
-      const neighbouringTile = board[x + 1]?.[y + 1]
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      const neighbouringTile = board[tile.x + x]?.[tile.y + y]
 
-      neighbouringTiles.push(neighbouringTile)
+      if (neighbouringTile != null) {
+        neighbouringTiles.push(neighbouringTile)
+      }
     }
   }
 
-  console.log(neighbouringTiles)
+  neighbouringTiles.forEach((tile) => {
+    if (tile.mine) {
+      surroundingMines.push(tile)
+    }
+  })
+
+  tile.tileElement.textContent = surroundingMines.length
 }
 
 function mineLocation(boardDimensions, mineQuantity) {
