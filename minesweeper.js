@@ -56,10 +56,12 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   return board
 }
 
-export function tileRevealing(tile, board) {
+export function tileRevealing(tile, board, boardElement) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
-      gameResolution(tile, board)
+      tile.status = TILE_STATUSES.MINE
+
+      gameResolution(tile, board, boardElement)
     } else {
       tile.status = TILE_STATUSES.NUMBER
 
@@ -115,9 +117,19 @@ function mineDistanceCalculation(tile, board) {
   gameResolution(tile, board)
 }
 
-function gameResolution(tile, board) {
+function gameResolution(tile, board, boardElement) {
   if (tile.mine) {
     console.log("A pyrrhic defeat")
+
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.mine) {
+          tile.status = TILE_STATUSES.MINE
+        }
+      })
+    })
+
+    boardElement.style.pointerEvents = "none"
   } else {
     console.log("A grand victory!")
   }

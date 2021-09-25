@@ -16,7 +16,7 @@ boardCreation.forEach((row) => {
     boardElement.append(tile.tileElement)
 
     tile.tileElement.addEventListener("click", (e) => {
-      tileRevealing(tile, boardCreation)
+      tileRevealing(tile, boardCreation, boardElement)
     })
     tile.tileElement.addEventListener("contextmenu", (e) => {
       e.preventDefault()
