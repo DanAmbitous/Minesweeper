@@ -15,6 +15,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
 
     for (let y = 0; y < boardDimensions; y++) {
       const tileElement = document.createElement("div")
+      tileElement.setAttribute("class", "tile")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
 
       let mine = false
@@ -31,11 +32,11 @@ export function boardPopulation(boardDimensions, mineQuantity) {
         mine,
         tileElement,
         get status() {
-          return this.element.dataset
+          return this.tileElement.dataset
         },
         set status(condition) {
           console.log(condition)
-          this.element.dataset.status = condition
+          this.tileElement.dataset.status = condition
         },
       }
 
@@ -56,6 +57,10 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   return board
 }
 
+export function tileRevealing(tile) {
+  tile.status = TILE_STATUSES.MARKED
+}
+
 function mineLocation(boardDimensions, mineQuantity) {
   const minePositions = []
 
@@ -71,7 +76,6 @@ function mineLocation(boardDimensions, mineQuantity) {
       minePositions.push(minePosition)
     }
   }
-  console.table(minePositions)
   return minePositions
 }
 

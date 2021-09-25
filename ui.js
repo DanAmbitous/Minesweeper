@@ -1,4 +1,4 @@
-import { boardPopulation } from "./minesweeper.js"
+import { boardPopulation, tileRevealing } from "./minesweeper.js"
 
 const BOARD_DIMENSIONS = 5
 const MINE_QUANTITY = 5
@@ -11,10 +11,12 @@ const boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
 boardCreation.forEach((row) => {
   row.forEach((tile) => {
     boardElement.append(tile.tileElement)
+
+    tile.tileElement.addEventListener("click", (e) => {
+      tileRevealing(tile)
+    })
   })
 })
-
-console.log(boardCreation)
 
 // import {
 //   tileCreation,
