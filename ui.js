@@ -13,7 +13,7 @@ boardCreation.forEach((row) => {
     boardElement.append(tile.tileElement)
 
     tile.tileElement.addEventListener("click", (e) => {
-      tileRevealing(tile)
+      tileRevealing(tile, boardCreation)
     })
   })
 })

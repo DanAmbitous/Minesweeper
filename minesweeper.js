@@ -57,17 +57,31 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   return board
 }
 
-export function tileRevealing(tile) {
+export function tileRevealing(tile, board) {
   console.log(tile.status)
   if (tile.status === TILE_STATUSES.HIDDEN) {
-    console.log("hi")
     if (tile.mine) {
       console.log("Hit a mine")
     } else {
-      console.log("hi")
       tile.status = TILE_STATUSES.NUMBER
+
+      mineDistanceCalculation(tile, board)
     }
   }
+}
+
+function mineDistanceCalculation(tile, board) {
+  const neighbouringTiles = []
+
+  for (let x = -1; x < 1; x++) {
+    for (let y = -1; y < 1; y++) {
+      const neighbouringTile = board[x + 1]?.[y + 1]
+
+      neighbouringTiles.push(neighbouringTile)
+    }
+  }
+
+  console.log(neighbouringTiles)
 }
 
 function mineLocation(boardDimensions, mineQuantity) {
