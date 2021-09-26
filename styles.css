@@ -72,3 +72,8 @@ input {
   cursor: pointer;
 }
 
+.defeat {
+  pointer-events: none;
+
+  opacity: 0.5;
+}

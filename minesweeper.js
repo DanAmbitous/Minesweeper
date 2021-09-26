@@ -48,7 +48,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   board.forEach((row) => {
     row.forEach((tile) => {
       if (tile.mine) {
-        // tile.tileElement.style.backgroundColor = "red"
+        tile.tileElement.style.backgroundColor = "red"
       }
     })
   })
@@ -56,16 +56,23 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   return board
 }
 
-export function tileRevealing(tile, board, boardElement) {
+export function tileRevealing(
+  tile,
+  board,
+  boardElement,
+  statusInformer,
+  MINE_QUANTITY
+) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
       tile.status = TILE_STATUSES.MINE
 
-      gameResolution(tile, board, boardElement)
+      gameResolution(tile, board, statusInformer, boardElement, MINE_QUANTITY)
     } else {
       tile.status = TILE_STATUSES.NUMBER
 
       mineDistanceCalculation(tile, board)
+      gameResolution(tile, board, statusInformer, boardElement, MINE_QUANTITY)
     }
   }
 }
@@ -113,25 +120,39 @@ function mineDistanceCalculation(tile, board) {
   })
 
   tile.tileElement.textContent = surroundingMines.length
-
-  gameResolution(tile, board)
 }
 
-function gameResolution(tile, board, boardElement) {
+function gameResolution(
+  tile,
+  board,
+  statusInformer,
+  boardElement,
+  MINE_QUANTITY
+) {
   if (tile.mine) {
-    console.log("A pyrrhic defeat")
+    boardElement.classList.add("defeat")
 
+    statusInformer.textContent = "You've hit a mine!"
+  } else {
+    const tiles = boardElement.children.length
+    const unminedTiles = Number(tiles - MINE_QUANTITY)
+    const revealedTiles = []
+    console.log(tile.status)
     board.forEach((row) => {
       row.forEach((tile) => {
-        if (tile.mine) {
-          tile.status = TILE_STATUSES.MINE
+        if (tile.status === TILE_STATUSES.NUMBER && !tile.mine) {
+          revealedTiles.push(tile)
         }
       })
     })
 
-    boardElement.style.pointerEvents = "none"
-  } else {
-    console.log("A grand victory!")
+    console.log(revealedTiles.length, tiles, unminedTiles)
+
+    if (revealedTiles.length + unminedTiles === tiles) {
+      console.log("Hip hip hurra!")
+    }
+
+    console.log(revealedTiles.length)
   }
 }
 
