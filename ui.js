@@ -1,18 +1,18 @@
 import { boardPopulation, tileRevealing, tileMarking } from "./minesweeper.js"
 
-const boardSizeRange = Number(document.querySelector("#board-size-range").value)
+let boardSizeRange = document.querySelector("#board-size-range")
 
-const BOARD_DIMENSIONS = boardSizeRange
-const MINE_QUANTITY = 5
+let BOARD_DIMENSIONS = Number(boardSizeRange.value)
+let MINE_QUANTITY = 2
 
-const boardElement = document.querySelector(".board")
+let boardElement = document.querySelector(".board")
 boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
 
-const statusInformer = document.querySelector(".subtext")
-const mineQuantityInsight = document.querySelector("#mine-count")
+let statusInformer = document.querySelector(".subtext")
+let mineQuantityInsight = document.querySelector("#mine-count")
 mineQuantityInsight.textContent = MINE_QUANTITY
-const replayContainer = document.querySelector(".game-redo-option")
-const boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+let replayContainer = document.querySelector(".game-redo-option")
+let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
 
 boardCreation.forEach((row) => {
   row.forEach((tile) => {
@@ -45,6 +45,49 @@ function gameRedo() {
   location.reload()
 }
 
+boardSizeRange.addEventListener("change", (e) => {
+  let BOARD_DIMENSIONS = Number(boardSizeRange.value)
+  let MINE_QUANTITY = 2
+
+  let boardElement = document.querySelector(".board")
+  boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
+
+  let currentTiles = Array.from(boardElement.children)
+
+  currentTiles.forEach((tile) => {
+    tile.remove()
+  })
+
+  let statusInformer = document.querySelector(".subtext")
+  let mineQuantityInsight = document.querySelector("#mine-count")
+  mineQuantityInsight.textContent = MINE_QUANTITY
+  let replayContainer = document.querySelector(".game-redo-option")
+  let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+
+  boardCreation.forEach((row) => {
+    row.forEach((tile) => {
+      boardElement.append(tile.tileElement)
+
+      tile.tileElement.addEventListener("click", () => {
+        tileRevealing(
+          tile,
+          boardCreation,
+          boardElement,
+          statusInformer,
+          MINE_QUANTITY,
+          replayContainer
+        )
+      })
+
+      tile.tileElement.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+
+        tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+      })
+    })
+  })
+})
+
 // import {
 //   tileCreation,
 //   tileRevealing,
@@ -52,15 +95,15 @@ function gameRedo() {
 //   TILE_STATUSES,
 // } from "./minesweeper.js"
 
-// const BOARD_SIZE = 5
-// const MINE_QUANTITY = 1
+// let BOARD_SIZE = 5
+// let MINE_QUANTITY = 1
 
-// const boardContainer = document.querySelector(".board")
+// let boardContainer = document.querySelector(".board")
 // boardContainer.style.setProperty("--size", BOARD_SIZE)
-// const mineQuantityIndicator = document.querySelector("#mine-count")
+// let mineQuantityIndicator = document.querySelector("#mine-count")
 // mineQuantityIndicator.textContent = MINE_QUANTITY
 
-// const board = tileCreation(BOARD_SIZE, MINE_QUANTITY)
+// let board = tileCreation(BOARD_SIZE, MINE_QUANTITY)
 
 // board.forEach((row) => {
 //   row.forEach((tile) => {
@@ -92,9 +135,9 @@ function gameRedo() {
 //       })
 //     })
 //   } else {
-//     const numberOfTiles = []
-//     const numberTiles = []
-//     const numberMinedTiles = []
+//     let numberOfTiles = []
+//     let numberTiles = []
+//     let numberMinedTiles = []
 
 //     board.forEach((row) => {
 //       row.forEach((tile) => {

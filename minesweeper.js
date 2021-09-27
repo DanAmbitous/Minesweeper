@@ -152,24 +152,25 @@ function gameResolution(
 
     replayContainer.classList.remove("off")
   } else {
-    const tiles = boardElement.children.length
-    const unminedTiles = Number(tiles - MINE_QUANTITY)
-    const revealedTiles = []
-    console.log(tile.status)
+    const revealedNumberTiles = []
+    const totalTiles = boardElement.children.length
+
+    console.log(totalTiles)
+
     board.forEach((row) => {
       row.forEach((tile) => {
-        if (tile.status === TILE_STATUSES.NUMBER && !tile.mine) {
-          revealedTiles.push(tile)
+        if (tile.status === TILE_STATUSES.NUMBER) {
+          revealedNumberTiles.push(tile)
         }
       })
     })
 
-    console.log(revealedTiles.length, tiles, unminedTiles)
-
-    if (revealedTiles.length + unminedTiles === tiles) {
+    if (
+      Number(totalTiles - (revealedNumberTiles.length + MINE_QUANTITY)) === 0
+    ) {
       statusInformer.textContent = "Victory!"
-      boardElement.classList.add("victory")
 
+      boardElement.classList.add("victory")
       replayContainer.classList.remove("off")
     }
   }
@@ -185,7 +186,6 @@ function mineLocation(boardDimensions, mineQuantity) {
     }
 
     const result = mineLocationUniquenessVerifer(minePosition, minePositions)
-    console.log(result)
     if (!result) {
       minePositions.push(minePosition)
     }

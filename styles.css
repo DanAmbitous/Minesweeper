@@ -51,6 +51,10 @@ body {
   user-select: none;
 }
 
+.board {
+  margin-top: 1vw;
+}
+
 .board > [data-status="hidden"] {
   background-color: #BBB;
   cursor: pointer;
@@ -78,7 +82,7 @@ input {
 }
 
 .victory {
-  box-shadow: 0px 0px 20px 5px gold;
+  box-shadow: 0px 0px 10px 5px gold;
 }
 
 .game-redo-option {
