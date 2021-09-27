@@ -9,7 +9,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   const board = []
 
   const minedTiles = mineLocation(boardDimensions, mineQuantity)
-
+  console.log(minedTiles)
   for (let x = 0; x < boardDimensions; x++) {
     const row = []
 
@@ -149,7 +149,8 @@ function gameResolution(
     console.log(revealedTiles.length, tiles, unminedTiles)
 
     if (revealedTiles.length + unminedTiles === tiles) {
-      console.log("Hip hip hurra!")
+      statusInformer.textContent = "Victory!"
+      boardElement.classList.add("victory")
     }
 
     console.log(revealedTiles.length)
