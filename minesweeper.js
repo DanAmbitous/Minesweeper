@@ -61,18 +61,33 @@ export function tileRevealing(
   board,
   boardElement,
   statusInformer,
-  MINE_QUANTITY
+  MINE_QUANTITY,
+  replayContainer
 ) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
       tile.status = TILE_STATUSES.MINE
 
-      gameResolution(tile, board, statusInformer, boardElement, MINE_QUANTITY)
+      gameResolution(
+        tile,
+        board,
+        statusInformer,
+        boardElement,
+        MINE_QUANTITY,
+        replayContainer
+      )
     } else {
       tile.status = TILE_STATUSES.NUMBER
 
       mineDistanceCalculation(tile, board)
-      gameResolution(tile, board, statusInformer, boardElement, MINE_QUANTITY)
+      gameResolution(
+        tile,
+        board,
+        statusInformer,
+        boardElement,
+        MINE_QUANTITY,
+        replayContainer
+      )
     }
   }
 }
@@ -127,12 +142,15 @@ function gameResolution(
   board,
   statusInformer,
   boardElement,
-  MINE_QUANTITY
+  MINE_QUANTITY,
+  replayContainer
 ) {
   if (tile.mine) {
     boardElement.classList.add("defeat")
 
     statusInformer.textContent = "You've hit a mine!"
+
+    replayContainer.classList.remove("off")
   } else {
     const tiles = boardElement.children.length
     const unminedTiles = Number(tiles - MINE_QUANTITY)
@@ -151,9 +169,9 @@ function gameResolution(
     if (revealedTiles.length + unminedTiles === tiles) {
       statusInformer.textContent = "Victory!"
       boardElement.classList.add("victory")
-    }
 
-    console.log(revealedTiles.length)
+      replayContainer.classList.remove("off")
+    }
   }
 }
 

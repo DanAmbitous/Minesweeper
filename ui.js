@@ -1,16 +1,16 @@
 import { boardPopulation, tileRevealing, tileMarking } from "./minesweeper.js"
 
-const BOARD_DIMENSIONS = 2
-const MINE_QUANTITY = 2
+let BOARD_DIMENSIONS = 2
+let MINE_QUANTITY = 2
 
-const boardElement = document.querySelector(".board")
+let boardElement = document.querySelector(".board")
 boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
 
-const statusInformer = document.querySelector(".subtext")
-const mineQuantityInsight = document.querySelector("#mine-count")
+let statusInformer = document.querySelector(".subtext")
+let mineQuantityInsight = document.querySelector("#mine-count")
 mineQuantityInsight.textContent = MINE_QUANTITY
-
-const boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+let replayContainer = document.querySelector(".game-redo-option")
+let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
 
 boardCreation.forEach((row) => {
   row.forEach((tile) => {
@@ -22,7 +22,8 @@ boardCreation.forEach((row) => {
         boardCreation,
         boardElement,
         statusInformer,
-        MINE_QUANTITY
+        MINE_QUANTITY,
+        replayContainer
       )
     })
 
@@ -33,6 +34,42 @@ boardCreation.forEach((row) => {
     })
   })
 })
+
+replayContainer
+  .querySelector(".affirmative-button")
+  .addEventListener("click", gameRedo)
+
+function gameRedo() {
+  let BOARD_DIMENSIONS = 2
+  let MINE_QUANTITY = 2
+
+  let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+
+  boardCreation.forEach((row) => {
+    row.forEach((tile) => {
+      boardElement.append(tile.tileElement)
+
+      console.log(boardElement)
+
+      tile.tileElement.addEventListener("click", () => {
+        tileRevealing(
+          tile,
+          boardCreation,
+          boardElement,
+          statusInformer,
+          MINE_QUANTITY,
+          replayContainer
+        )
+      })
+
+      tile.tileElement.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+
+        tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+      })
+    })
+  })
+}
 
 // import {
 //   tileCreation,
