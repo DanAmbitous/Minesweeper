@@ -9,7 +9,7 @@ export function boardPopulation(boardDimensions, mineQuantity) {
   const board = []
 
   const minedTiles = mineLocation(boardDimensions, mineQuantity)
-  console.log(minedTiles)
+
   for (let x = 0; x < boardDimensions; x++) {
     const row = []
 
@@ -167,7 +167,7 @@ function mineLocation(boardDimensions, mineQuantity) {
     }
 
     const result = mineLocationUniquenessVerifer(minePosition, minePositions)
-
+    console.log(result)
     if (!result) {
       minePositions.push(minePosition)
     }
@@ -180,11 +180,16 @@ function randomMineLocation(boardDimensions) {
 }
 
 function mineLocationUniquenessVerifer(minePosition, minePositions) {
+  let notUnique = false
+
   minePositions.forEach((locationSet) => {
-    if (locationSet.x === minePosition.x || locationSet.y === locationSet.y) {
-      return
+    if (locationSet.x === minePosition.x && locationSet.y === locationSet.y) {
+      notUnique = true
+      return notUnique
     }
+    return notUnique
   })
+  return notUnique
 }
 
 // export const TILE_STATUSES = {
