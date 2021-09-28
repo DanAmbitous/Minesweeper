@@ -97,3 +97,7 @@ input {
 .off {
   display: none;
 }
+
+.board-controls {
+  font-size: 0.5em;
+}

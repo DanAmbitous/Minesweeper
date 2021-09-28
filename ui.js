@@ -1,6 +1,7 @@
 import { boardPopulation, tileRevealing, tileMarking } from "./minesweeper.js"
 
 let boardSizeRange = document.querySelector("#board-size-range")
+let mineQuantityRange = document.querySelector("#mine-quantity-range")
 
 let BOARD_DIMENSIONS = Number(boardSizeRange.value)
 let MINE_QUANTITY = 2
@@ -13,6 +14,13 @@ let mineQuantityInsight = document.querySelector("#mine-count")
 mineQuantityInsight.textContent = MINE_QUANTITY
 let replayContainer = document.querySelector(".game-redo-option")
 let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+let boardSizeIndicator = document.querySelector(".board-size")
+let mineQuantity = document.querySelector(".mine-quantity")
+
+mineQuantity.min = BOARD_DIMENSIONS
+
+boardSizeIndicator.textContent = `${BOARD_DIMENSIONS}x${BOARD_DIMENSIONS}`
+mineQuantity.textContent = MINE_QUANTITY
 
 boardCreation.forEach((row) => {
   row.forEach((tile) => {
@@ -45,9 +53,12 @@ function gameRedo() {
   location.reload()
 }
 
-boardSizeRange.addEventListener("change", (e) => {
+boardSizeRange.addEventListener("input", (e) => {
   let BOARD_DIMENSIONS = Number(boardSizeRange.value)
   let MINE_QUANTITY = 2
+
+  mineQuantityRange.min = BOARD_DIMENSIONS
+  console.log(mineQuantity)
 
   let boardElement = document.querySelector(".board")
   boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
@@ -58,11 +69,9 @@ boardSizeRange.addEventListener("change", (e) => {
     tile.remove()
   })
 
-  let statusInformer = document.querySelector(".subtext")
-  let mineQuantityInsight = document.querySelector("#mine-count")
-  mineQuantityInsight.textContent = MINE_QUANTITY
-  let replayContainer = document.querySelector(".game-redo-option")
   let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+
+  boardSizeIndicator.textContent = `${BOARD_DIMENSIONS}x${BOARD_DIMENSIONS}`
 
   boardCreation.forEach((row) => {
     row.forEach((tile) => {
@@ -86,6 +95,12 @@ boardSizeRange.addEventListener("change", (e) => {
       })
     })
   })
+})
+
+mineQuantityRange.addEventListener("input", (e) => {
+  MINE_QUANTITY = e.target.value
+
+  console.log(MINE_QUANTITY)
 })
 
 // import {
