@@ -57,9 +57,6 @@ boardSizeRange.addEventListener("input", (e) => {
   let BOARD_DIMENSIONS = Number(boardSizeRange.value)
   let MINE_QUANTITY = 2
 
-  mineQuantityRange.min = BOARD_DIMENSIONS
-  console.log(mineQuantity)
-
   let boardElement = document.querySelector(".board")
   boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
 
@@ -98,9 +95,38 @@ boardSizeRange.addEventListener("input", (e) => {
 })
 
 mineQuantityRange.addEventListener("input", (e) => {
-  MINE_QUANTITY = e.target.value
+  const tiles = Array.from(boardElement.children)
 
-  console.log(MINE_QUANTITY)
+  MINE_QUANTITY = 5
+
+  tiles.forEach((tile) => {
+    tile.remove()
+  })
+
+  boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+
+  boardCreation.forEach((row) => {
+    row.forEach((tile) => {
+      boardElement.append(tile.tileElement)
+
+      tile.tileElement.addEventListener("click", () => {
+        tileRevealing(
+          tile,
+          boardCreation,
+          boardElement,
+          statusInformer,
+          MINE_QUANTITY,
+          replayContainer
+        )
+      })
+
+      tile.tileElement.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+
+        tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+      })
+    })
+  })
 })
 
 // import {
