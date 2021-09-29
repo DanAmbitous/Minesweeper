@@ -54,21 +54,14 @@ function gameRedo() {
 }
 
 boardSizeRange.addEventListener("input", (e) => {
-  let BOARD_DIMENSIONS = Number(boardSizeRange.value)
-  let MINE_QUANTITY = 2
+  BOARD_DIMENSIONS = boardSizeRange.value
 
-  let boardElement = document.querySelector(".board")
+  const tiles = Array.from(boardElement.children)
+
+  tiles.forEach((tile) => tile.remove())
+
+  boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
   boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
-
-  let currentTiles = Array.from(boardElement.children)
-
-  currentTiles.forEach((tile) => {
-    tile.remove()
-  })
-
-  let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
-
-  boardSizeIndicator.textContent = `${BOARD_DIMENSIONS}x${BOARD_DIMENSIONS}`
 
   boardCreation.forEach((row) => {
     row.forEach((tile) => {
@@ -92,41 +85,71 @@ boardSizeRange.addEventListener("input", (e) => {
       })
     })
   })
+
+  // let numberOfMines = []
+  // let BOARD_DIMENSIONS = Number(boardSizeRange.value)
+  // MINE_QUANTITY = mineQuantityRange.value
+  // let boardElement = document.querySelector(".board")
+  // boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
+  // const tiles = Array.from(boardElement.children)
+  // tiles.forEach((tile) => {
+  //   if (tile.mine) {
+  //     numberOfMines.push(tile)
+  //   }
+  // })
+  // let currentTiles = Array.from(boardElement.children)
+  // currentTiles.forEach((tile) => {
+  //   tile.remove()
+  // })
+  // let boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+  // boardSizeIndicator.textContent = `${BOARD_DIMENSIONS}x${BOARD_DIMENSIONS}`
+  // boardCreation.forEach((row) => {
+  //   row.forEach((tile) => {
+  //     boardElement.append(tile.tileElement)
+  //     tile.tileElement.addEventListener("click", () => {
+  //       tileRevealing(
+  //         tile,
+  //         boardCreation,
+  //         boardElement,
+  //         statusInformer,
+  //         MINE_QUANTITY,
+  //         replayContainer
+  //       )
+  //     })
+  //     tile.tileElement.addEventListener("contextmenu", (e) => {
+  //       e.preventDefault()
+  //       tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+  //     })
+  //   })
+  // })
 })
 
 mineQuantityRange.addEventListener("input", (e) => {
-  const tiles = Array.from(boardElement.children)
-
-  MINE_QUANTITY = 5
-
-  tiles.forEach((tile) => {
-    tile.remove()
-  })
-
-  boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
-
-  boardCreation.forEach((row) => {
-    row.forEach((tile) => {
-      boardElement.append(tile.tileElement)
-
-      tile.tileElement.addEventListener("click", () => {
-        tileRevealing(
-          tile,
-          boardCreation,
-          boardElement,
-          statusInformer,
-          MINE_QUANTITY,
-          replayContainer
-        )
-      })
-
-      tile.tileElement.addEventListener("contextmenu", (e) => {
-        e.preventDefault()
-
-        tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
-      })
-    })
-  })
+  // const tiles = Array.from(boardElement.children)
+  // MINE_QUANTITY = Number(boardSizeRange.value)
+  // tiles.forEach((tile) => {
+  //   tile.remove()
+  // })
+  // boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+  // boardCreation.forEach((row) => {
+  //   row.forEach((tile) => {
+  //     boardElement.append(tile.tileElement)
+  //     tile.tileElement.addEventListener("click", () => {
+  //       tileRevealing(
+  //         tile,
+  //         boardCreation,
+  //         boardElement,
+  //         statusInformer,
+  //         MINE_QUANTITY,
+  //         replayContainer
+  //       )
+  //     })
+  //     tile.tileElement.addEventListener("contextmenu", (e) => {
+  //       e.preventDefault()
+  //       tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+  //     })
+  //   })
+  // })
 })
 
 // import {
