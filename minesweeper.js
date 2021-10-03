@@ -185,11 +185,14 @@ function mineLocation(boardDimensions, mineQuantity) {
       y: randomMineLocation(boardDimensions),
     }
 
-    const result = mineLocationUniquenessVerifer(minePosition, minePositions)
-    if (!result) {
-      minePositions.push(minePosition)
-    }
+    // const result = mineLocationUniquenessVerifer(minePosition, minePositions)
+    // if (!result) {
+    //   minePositions.push(minePosition)
+    // }
+
+    minePositions.push(minePosition)
   }
+
   return minePositions
 }
 
