@@ -185,12 +185,11 @@ function mineLocation(boardDimensions, mineQuantity) {
       y: randomMineLocation(boardDimensions),
     }
 
-    // const result = mineLocationUniquenessVerifer(minePosition, minePositions)
-    // if (!result) {
-    //   minePositions.push(minePosition)
-    // }
+    let result = mineLocationUniquenessVerifer(minePosition, minePositions)
 
-    minePositions.push(minePosition)
+    if (!result) {
+      minePositions.push(minePosition)
+    }
   }
 
   return minePositions
@@ -201,16 +200,20 @@ function randomMineLocation(boardDimensions) {
 }
 
 function mineLocationUniquenessVerifer(minePosition, minePositions) {
-  let notUnique = false
+  let isUnique
 
-  minePositions.forEach((locationSet) => {
-    if (locationSet.x === minePosition.x && locationSet.y === locationSet.y) {
-      notUnique = true
-      return notUnique
+  minePositions.forEach((position) => {
+    const { x: xArray, y: yArray } = position
+    const { x, y } = minePosition
+
+    if (xArray === x && yArray === y) {
+      isUnique = false
+
+      return isUnique
     }
-    return notUnique
+    return isUnique
   })
-  return notUnique
+  return isUnique
 }
 
 // export const TILE_STATUSES = {

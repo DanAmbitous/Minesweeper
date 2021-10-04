@@ -131,15 +131,47 @@ function gameRedo() {
 gameAdjustments.forEach((range) => {
   range.addEventListener("input", (e) => {
     if (e.target.id === "mine-quantity-range") {
-    } else if (e.target.id === "board-size-range") {
+      MINE_QUANTITY = e.target.value
+
       const boardElementTiles = Array.from(boardElement.children)
 
       boardElementTiles.forEach((tile) => tile.remove())
 
+      boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
+      boardCreation.forEach((row) => {
+        row.forEach((tile) => {
+          boardElement.append(tile.tileElement)
+
+          tile.tileElement.addEventListener("click", () => {
+            tileRevealing(
+              tile,
+              boardCreation,
+              boardElement,
+              statusInformer,
+              MINE_QUANTITY,
+              replayContainer
+            )
+          })
+
+          tile.tileElement.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+
+            tileMarking(tile, boardCreation, mineQuantityInsight, MINE_QUANTITY)
+          })
+        })
+      })
+    } else if (e.target.id === "board-size-range") {
       BOARD_DIMENSIONS = e.target.value
+
+      const boardElementTiles = Array.from(boardElement.children)
+
+      boardElementTiles.forEach((tile) => tile.remove())
 
       boardSizeIndicator.textContent = `${BOARD_DIMENSIONS}x${BOARD_DIMENSIONS}`
       boardElement.style.setProperty("--size", BOARD_DIMENSIONS)
+
+      mineQuantityRange.min = BOARD_DIMENSIONS
+      mineQuantityRange.max = BOARD_DIMENSIONS * 2
 
       boardCreation = boardPopulation(BOARD_DIMENSIONS, MINE_QUANTITY)
       boardCreation.forEach((row) => {
