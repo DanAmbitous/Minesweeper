@@ -33,7 +33,7 @@ body {
 }
 
 .tile {
-  border-radius: 50%;
+  border-radius: 5%;
 }
 
 /* .tile:hover { 
@@ -70,6 +70,7 @@ body {
 
 .board > [data-status="marked"] {
   background-color: yellow;
+  border-color: yellow;
 }
 
 input {
