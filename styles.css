@@ -71,6 +71,7 @@ body {
 .board > [data-status="marked"] {
   background-color: yellow;
   border-color: yellow;
+  cursor: pointer;
 }
 
 input {

@@ -45,13 +45,17 @@ export function leftClick() {
 }
 
 export function rightClick(tile, MINE_QUANTITY) {
-  tile.status = TILE_STATUSES.MARKED
+  if (tile.status === TILE_STATUSES.MARKED) {
+    tile.status = TILE_STATUSES.HIDDEN
+  } else {
+    tile.status = TILE_STATUSES.MARKED
 
-  const numberOfMarkedTiles = markedTileNumeration()
+    const numberOfMarkedTiles = markedTileNumeration()
 
-  mineQuantityDisplayer.textContent = Number(
-    MINE_QUANTITY - numberOfMarkedTiles.length
-  )
+    mineQuantityDisplayer.textContent = Number(
+      MINE_QUANTITY - numberOfMarkedTiles.length
+    )
+  }
 }
 
 function markedTileNumeration() {
