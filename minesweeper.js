@@ -47,18 +47,16 @@ export function leftClick() {
 export function rightClick(tile, MINE_QUANTITY) {
   if (tile.status === TILE_STATUSES.MARKED) {
     tile.status = TILE_STATUSES.HIDDEN
+
+    markedTileNumeration(MINE_QUANTITY)
   } else {
     tile.status = TILE_STATUSES.MARKED
 
-    const numberOfMarkedTiles = markedTileNumeration()
-
-    mineQuantityDisplayer.textContent = Number(
-      MINE_QUANTITY - numberOfMarkedTiles.length
-    )
+    markedTileNumeration(MINE_QUANTITY)
   }
 }
 
-function markedTileNumeration() {
+function markedTileNumeration(MINE_QUANTITY) {
   const tiles = Array.from(boardElement.children)
 
   const markedTiles = []
@@ -69,7 +67,7 @@ function markedTileNumeration() {
     }
   })
 
-  return markedTiles
+  mineQuantityDisplayer.textContent = Number(MINE_QUANTITY - markedTiles.length)
 }
 
 export function stateSetup(MINE_QUANTITY) {
