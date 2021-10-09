@@ -13,6 +13,14 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
 
   let minePositions = minePositionPicker(DIMENSIONS, MINE_QUANTITY)
 
+  let numberifedMinePositions = []
+
+  minePositions.forEach((positions) => {
+    numberifedMinePositions.push(JSON.parse(positions))
+  })
+
+  console.log(numberifedMinePositions)
+
   for (let x = 0; x < DIMENSIONS; x++) {
     const row = []
 
@@ -22,16 +30,13 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
       tileElement.classList.add("tile")
       let mine
 
-      console.log(minePositions)
-
-      minePositions.forEach(({ x: minePositionX, y: minePositionY }) => {
-        console.log(minePositionX, x)
-        console.log(minePositionY, y)
-
-        if (minePositionX === x && minePositionY === y) {
-          mine = true
+      numberifedMinePositions.forEach(
+        ({ x: minePositionX, y: minePositionY }) => {
+          if (minePositionX === x && minePositionY === y) {
+            mine = true
+          }
         }
-      })
+      )
 
       const tile = {
         tileElement,
@@ -45,8 +50,6 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
           this.tileElement.dataset.status = status
         },
       }
-
-      console.log(tile.mine)
 
       if (tile.mine) {
         tile.status = TILE_STATUSES.MINE
@@ -85,20 +88,18 @@ export function rightClick(tile, MINE_QUANTITY) {
 }
 
 function minePositionPicker(DIMENSIONS, MINE_QUANTITY) {
-  const uniqueMinePositions = []
+  const minePositions = new Set()
 
-  while (uniqueMinePositions.length < MINE_QUANTITY) {
+  while (minePositions.size < MINE_QUANTITY) {
     const minePosition = {
       x: PositionPicker(DIMENSIONS),
       y: PositionPicker(DIMENSIONS),
     }
 
-    if (!uniqueMinePositions.includes(minePosition)) {
-      uniqueMinePositions.push(minePosition)
-    }
+    minePositions.add(JSON.stringify(minePosition))
   }
 
-  return uniqueMinePositions
+  return minePositions
 }
 
 function PositionPicker(DIMENSIONS) {
