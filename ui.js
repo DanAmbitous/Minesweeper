@@ -20,7 +20,7 @@ boardPopulating.forEach((row) => {
     boardContainer.append(tile.tileElement)
 
     tile.tileElement.addEventListener("click", (e) => {
-      leftClick()
+      leftClick(tile)
     })
     tile.tileElement.addEventListener("contextmenu", (e) => {
       e.preventDefault()

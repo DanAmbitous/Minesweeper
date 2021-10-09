@@ -11,6 +11,8 @@ const boardElement = document.querySelector(".board")
 export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
   const board = []
 
+  let minePositions = minePositionPicker(DIMENSIONS, MINE_QUANTITY)
+  console.log(minePositions)
   for (let x = 0; x < DIMENSIONS; x++) {
     const row = []
 
@@ -40,8 +42,15 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
   return board
 }
 
-export function leftClick() {
-  console.log("hi")
+export function leftClick(tile) {
+  console.log(tile.status, TILE_STATUSES.MARKED)
+  if (tile.status === TILE_STATUSES.HIDDEN) {
+    if (tile.mine) {
+      tile.status = TILE_STATUSES.MINE
+    } else {
+      tile.status = TILE_STATUSES.NUMBER
+    }
+  }
 }
 
 export function rightClick(tile, MINE_QUANTITY) {
@@ -54,6 +63,26 @@ export function rightClick(tile, MINE_QUANTITY) {
 
     markedTileNumeration(MINE_QUANTITY)
   }
+}
+
+function minePositionPicker(DIMENSIONS, MINE_QUANTITY) {
+  const minePositionsArray = new Set()
+  while (minePositionsArray.size < MINE_QUANTITY) {
+    const minePosition = {
+      x: PositionPicker(DIMENSIONS),
+      y: PositionPicker(DIMENSIONS),
+    }
+
+    console.log(minePosition)
+
+    minePositionsArray.add(minePosition)
+  }
+
+  return minePositionsArray
+}
+
+function PositionPicker(DIMENSIONS) {
+  return Math.floor(Math.random() * DIMENSIONS)
 }
 
 function markedTileNumeration(MINE_QUANTITY) {
