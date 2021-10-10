@@ -19,8 +19,6 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
     numberifedMinePositions.push(JSON.parse(positions))
   })
 
-  console.log(numberifedMinePositions)
-
   for (let x = 0; x < DIMENSIONS; x++) {
     const row = []
 
@@ -28,7 +26,7 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
       const tileElement = document.createElement("div")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
       tileElement.classList.add("tile")
-      let mine
+      let mine = false
 
       numberifedMinePositions.forEach(
         ({ x: minePositionX, y: minePositionY }) => {
@@ -64,15 +62,48 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
   return board
 }
 
-export function leftClick(tile) {
+export function leftClick(tile, boardPopulating) {
   console.log(tile.status, TILE_STATUSES.MARKED)
   if (tile.status === TILE_STATUSES.HIDDEN) {
     if (tile.mine) {
       tile.status = TILE_STATUSES.MINE
     } else {
       tile.status = TILE_STATUSES.NUMBER
+
+      const nearbyTiles = nearbyTilesInsight(tile, boardPopulating)
+
+      surroundingMineCalculator(nearbyTiles)
     }
   }
+}
+
+function nearbyTilesInsight(tile, boardPopulating) {
+  const tilesOfTheBoard = []
+
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      const neighboringTile = boardPopulating[tile.x + x]?.[tile.y + y]
+
+      if (nearbyTilesInsight) {
+        tilesOfTheBoard.push(neighboringTile)
+      }
+    }
+  }
+
+  return tilesOfTheBoard
+}
+
+function surroundingMineCalculator(nearbyTiles) {
+  const mineDetectedTiles = []
+  console.log(nearbyTiles)
+  nearbyTiles.forEach((tile) => {
+    console.log(tile.mine)
+    if (tile.mine) {
+      mineDetectedTiles.push(tile)
+    }
+  })
+
+  console.log(mineDetectedTiles)
 }
 
 export function rightClick(tile, MINE_QUANTITY) {
