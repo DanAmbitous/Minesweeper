@@ -72,12 +72,34 @@ export function leftClick(tile, boardPopulating) {
       const nearbyTiles = nearbyTilesInsight(tile, boardPopulating)
       const mineQuantity = surroundingMineCalculator(nearbyTiles)
       neighboringMineTeller(tile, mineQuantity)
+
+      if (mineQuantity === 0) {
+        console.log(mineQuantity)
+
+        nearbyTiles.forEach((tile) => leftClick(tile, boardPopulating))
+      }
+    }
+  }
+}
+
+function safeTileRevealment(tile, boardPopulating) {
+  console.log(boardPopulating)
+
+  for (let x = 0; x <= boardPopulating.length; x++) {
+    for (let y = 0; y <= boardPopulating.length; y++) {
+      const tile = boardPopulating[tile.x + x][tile.y + y]
+
+      if (!tile.mine) {
+        tile.status = TILE_STATUSES.NUMBER
+      }
     }
   }
 }
 
 function neighboringMineTeller(tile, mineQuantity) {
-  tile.tileElement.innerText = mineQuantity
+  if (mineQuantity > 0) {
+    tile.tileElement.innerText = mineQuantity
+  }
 }
 
 function nearbyTilesInsight(tile, boardPopulating) {
