@@ -76,24 +76,14 @@ export function leftClick(tile, boardPopulating) {
       if (mineQuantity === 0) {
         console.log(mineQuantity)
 
-        nearbyTiles.forEach((tile) => leftClick(tile, boardPopulating))
+        safeTileRevealment(nearbyTiles, boardPopulating)
       }
     }
   }
 }
 
-function safeTileRevealment(tile, boardPopulating) {
-  console.log(boardPopulating)
-
-  for (let x = 0; x <= boardPopulating.length; x++) {
-    for (let y = 0; y <= boardPopulating.length; y++) {
-      const tile = boardPopulating[tile.x + x][tile.y + y]
-
-      if (!tile.mine) {
-        tile.status = TILE_STATUSES.NUMBER
-      }
-    }
-  }
+function safeTileRevealment(nearbyTiles, boardPopulating) {
+  nearbyTiles.forEach((tile) => leftClick(tile, boardPopulating))
 }
 
 function neighboringMineTeller(tile, mineQuantity) {

@@ -6,7 +6,7 @@ import {
 } from "./minesweeper.js"
 
 const DIMENSIONS = 5
-const MINE_QUANTITY = 5
+const MINE_QUANTITY = 3
 
 const boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 
