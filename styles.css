@@ -65,7 +65,9 @@ body {
 }
 
 .board > [data-status="number"] {
-  background-color: none;
+  background-color: gray;
+  font-size: 0.5em;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .board > [data-status="marked"] {

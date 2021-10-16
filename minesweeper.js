@@ -23,7 +23,7 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
     const row = []
 
     for (let y = 0; y < DIMENSIONS; y++) {
-      const tileElement = document.createElement("div")
+      const tileElement = document.createElement("button")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
       tileElement.classList.add("tile")
       let mine = false
@@ -49,10 +49,6 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
         },
       }
 
-      if (tile.mine) {
-        tile.status = TILE_STATUSES.MINE
-      }
-
       row.push(tile)
     }
 
@@ -74,15 +70,13 @@ export function leftClick(tile, boardPopulating) {
       neighboringMineTeller(tile, mineQuantity)
 
       if (mineQuantity === 0) {
-        console.log(mineQuantity)
-
-        safeTileRevealment(nearbyTiles, boardPopulating)
+        clearTilesRevealment(nearbyTiles, boardPopulating)
       }
     }
   }
 }
 
-function safeTileRevealment(nearbyTiles, boardPopulating) {
+function clearTilesRevealment(nearbyTiles, boardPopulating) {
   nearbyTiles.forEach((tile) => leftClick(tile, boardPopulating))
 }
 
@@ -112,7 +106,6 @@ function surroundingMineCalculator(nearbyTiles) {
   const mineDetectedTiles = []
 
   nearbyTiles.forEach((tile) => {
-    console.log(tile.mine)
     if (tile.mine) {
       mineDetectedTiles.push(tile)
     }
