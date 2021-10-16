@@ -14,6 +14,8 @@ const boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
 
+const menuTemplate = document.querySelector("#menu")
+
 stateSetup(MINE_QUANTITY)
 
 boardPopulating.forEach((row) => {
@@ -36,16 +38,30 @@ function clickFunctionalities(tile) {
   gameOver(tile.mine, boardPopulating)
 }
 
-function gameOver(mine, boardPopulating) {
+function gameOver(mine) {
   if (mine) {
     const boardElements = Array.from(boardContainer.children)
 
     boardElements.forEach((tile) => {
       console.log(tile)
-      // tile.removeEventListener("click", clickFunctionalities)
       tile.disabled = true
     })
+
+    menu(false)
   } else {
     console.log("Victory")
   }
+}
+
+function menu(won) {
+  const clone = menuTemplate.content.cloneNode(true)
+  const p = clone.querySelectorAll("p")
+
+  if (!won) {
+    p[0].textContent = "You've lost"
+  } else {
+    p[0].textContent = "You've won"
+  }
+
+  boardContainer.append(p[0])
 }
