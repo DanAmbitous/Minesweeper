@@ -116,3 +116,7 @@ input {
 .results > h3 {
   align-self: center;
 }
+
+.results > .replay {
+  cursor: pointer;
+}

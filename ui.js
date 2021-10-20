@@ -6,10 +6,10 @@ import {
   TILE_STATUSES,
 } from "./minesweeper.js"
 
-const DIMENSIONS = 5
-const MINE_QUANTITY = 5
+let DIMENSIONS = 5
+let MINE_QUANTITY = 5
 
-const boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
+let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
@@ -44,7 +44,6 @@ function gameOver(mine) {
     const boardElements = Array.from(boardContainer.children)
 
     boardElements.forEach((tile) => {
-      console.log(tile)
       tile.disabled = true
     })
 
@@ -53,8 +52,6 @@ function gameOver(mine) {
     console.log("Victory")
     menu(true)
   }
-
-  document.querySelector(".replay").addEventListener("click", replay)
 }
 
 function replay() {
@@ -78,12 +75,14 @@ function menu(won) {
     content.forEach((element) => {
       resultsContainer.appendChild(element)
     })
+
+    document.querySelector(".replay").addEventListener("click", replay)
   } else {
     h3.textContent = "You've won"
   }
 }
 
-menu(false)
+// menu(false)
 
 function restartGame() {
   const tiles = Array.from(boardContainer.children)
@@ -91,4 +90,10 @@ function restartGame() {
   tiles.forEach((tile) => {
     tile.remove()
   })
+
+  console.log(boardPopulating)
+
+  boardPopulating = []
+
+  console.log(boardPopulating)
 }
