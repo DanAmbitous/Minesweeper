@@ -14,24 +14,12 @@ let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
 
+tileAppendment()
+
 const menuTemplate = document.querySelector("#menu")
 const resultsContainer = document.querySelector(".results")
 
 stateSetup(MINE_QUANTITY)
-
-boardPopulating.forEach((row) => {
-  row.forEach((tile) => {
-    boardContainer.append(tile.tileElement)
-
-    tile.tileElement.addEventListener("click", () => clickFunctionalities(tile))
-
-    tile.tileElement.addEventListener("contextmenu", (e) => {
-      e.preventDefault()
-
-      rightClick(tile, MINE_QUANTITY)
-    })
-  })
-})
 
 function clickFunctionalities(tile) {
   leftClick(tile, boardPopulating)
@@ -91,9 +79,28 @@ function restartGame() {
     tile.remove()
   })
 
-  console.log(boardPopulating)
-
   boardPopulating = []
 
   console.log(boardPopulating)
+  boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
+
+  tileAppendment()
+}
+
+function tileAppendment() {
+  boardPopulating.forEach((row) => {
+    row.forEach((tile) => {
+      boardContainer.append(tile.tileElement)
+
+      tile.tileElement.addEventListener("click", () =>
+        clickFunctionalities(tile)
+      )
+
+      tile.tileElement.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+
+        rightClick(tile, MINE_QUANTITY)
+      })
+    })
+  })
 }
