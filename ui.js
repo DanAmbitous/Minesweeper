@@ -15,6 +15,7 @@ const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
 
 const menuTemplate = document.querySelector("#menu")
+const resultsContainer = document.querySelector(".results")
 
 stateSetup(MINE_QUANTITY)
 
@@ -50,18 +51,44 @@ function gameOver(mine) {
     menu(false)
   } else {
     console.log("Victory")
+    menu(true)
   }
+
+  document.querySelector(".replay").addEventListener("click", replay)
+}
+
+function replay() {
+  restartGame()
 }
 
 function menu(won) {
   const clone = menuTemplate.content.cloneNode(true)
-  const p = clone.querySelectorAll("p")
+  const h3 = clone.querySelector(".title")
+  const description = clone.querySelector(".description")
+  const replayButton = clone.querySelector(".replay")
+
+  const content = []
 
   if (!won) {
-    p[0].textContent = "You've lost"
-  } else {
-    p[0].textContent = "You've won"
-  }
+    h3.textContent = "You've lost"
+    description.textContent = "Would you like to retry?"
 
-  boardContainer.append(p[0])
+    content.push(h3, description, replayButton)
+
+    content.forEach((element) => {
+      resultsContainer.appendChild(element)
+    })
+  } else {
+    h3.textContent = "You've won"
+  }
+}
+
+menu(false)
+
+function restartGame() {
+  const tiles = Array.from(boardContainer.children)
+
+  tiles.forEach((tile) => {
+    tile.remove()
+  })
 }
