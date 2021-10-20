@@ -81,10 +81,11 @@ function restartGame() {
 
   boardPopulating = []
 
-  console.log(boardPopulating)
   boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 
   tileAppendment()
+
+  resultsContainer.innerHTML = ""
 }
 
 function tileAppendment() {
