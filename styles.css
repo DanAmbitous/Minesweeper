@@ -17,7 +17,7 @@ body {
 }
 
 .subtext {
-  color: #CCC;
+  color: #ccc;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
@@ -29,7 +29,7 @@ body {
   grid-template-rows: repeat(var(--size, 5), 60px);
   gap: 4px;
   background-color: #777;
-  border-radius:10px;
+  border-radius: 10px;
 }
 
 .tile {
@@ -47,7 +47,7 @@ body {
   justify-content: center;
   align-items: center;
   color: white;
-  border: 2px solid #BBB;
+  border: 2px solid #bbb;
   user-select: none;
 }
 
@@ -56,7 +56,7 @@ body {
 }
 
 .board > [data-status="hidden"] {
-  background-color: #BBB;
+  background-color: #bbb;
   cursor: pointer;
 }
 
@@ -67,7 +67,7 @@ body {
 .board > [data-status="number"] {
   background-color: gray;
   font-size: 0.5em;
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
 }
 
 .board > [data-status="marked"] {
@@ -107,10 +107,10 @@ input {
 }
 
 .results {
-  background:#222;
+  background: #222;
   display: flex;
   flex-direction: column;
-    align-items: stretch;
+  border-radius: 10px;
 }
 
 .results > h3 {
@@ -119,4 +119,21 @@ input {
 
 .results > .replay {
   cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+}
+
+.content-container {
+  display: flex;
+}
+
+.button-container {
+  display: flex;
+    flex-direction: column;
 }

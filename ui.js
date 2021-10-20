@@ -70,8 +70,6 @@ function menu(won) {
   }
 }
 
-// menu(false)
-
 function restartGame() {
   const tiles = Array.from(boardContainer.children)
 

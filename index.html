@@ -1,51 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="minesweeper.js"></script>
-  <script type="module" src="ui.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <title>Minesweeper</title>
-</head>
-<body>
-  <h3 class="title">Minesweeper</h3>
-  <div class="subtext">
-    Mines Left: <span id="mine-count">---</span>
-  </div>
-  <div id="range" class='board-controls'>
-    <strong>Board Size</strong>:
-     <span class="board-size">---</span>
-    <br>
-    <input type="range" min="5" max="10" value='5' id='board-size-range' class='game-adjustments'>
-    
-    <br>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="minesweeper.js"></script>
+    <script type="module" src="ui.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <title>Minesweeper</title>
+  </head>
+  <body>
+    <h3 class="title">Minesweeper</h3>
+    <div class="subtext">Mines Left: <span id="mine-count">---</span></div>
+    <div id="range" class="board-controls">
+      <strong>Board Size</strong>:
+      <span class="board-size">---</span>
+      <br />
+      <input type="range" min="5" max="10" value="5" id="board-size-range" />
 
-    <strong>Mine Quantity</strong>: 
-    <span class="mine-quantity">---</span>
-    <br>
-    <input type="range" min="" max="" value="" id='mine-quantity-range' class='game-adjustments'>
-  </div>
+      <br />
 
+      <strong>Mine Quantity</strong>:
+      <span class="mine-quantity">---</span>
 
-  <div class="board">
+      <br />
 
-  </div>
+      <input
+        type="range"
+        min=""
+        max=""
+        value=""
+        id="mine-quantity-range"
+        class="game-adjustments"
+      />
 
-  <div class='results'></div>
+      <br />
 
-  <template id="menu">
-    <div class="container">
-      <h3 class='title'></h3>
-      <p class='description'></p>
-  
-      <button class='replay'>Replay</button>
+      <div class="button-container">
+        <button class="restart">Restart</button>
+
+      </div>
     </div>
-   
-  </template>
 
-</body>
+    <div class="board"></div>
+
+    <div class="results"></div>
+
+    <template id="menu">
+      <div class="container">
+        <h3 class="title"></h3>
+        <p class="description"></p>
+
+        <button class="replay">Replay</button>
+      </div>
+    </template>
+  </body>
 </html>
