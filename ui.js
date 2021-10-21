@@ -14,6 +14,10 @@ let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
 
+const restartButton = document.querySelector(".restart")
+
+restartButton.addEventListener("click", restartGame)
+
 tileAppendment()
 
 const menuTemplate = document.querySelector("#menu")
@@ -42,9 +46,7 @@ function gameOver(mine) {
   }
 }
 
-function replay() {
-  restartGame()
-}
+restartGame()
 
 function menu(won) {
   const clone = menuTemplate.content.cloneNode(true)
@@ -64,7 +66,7 @@ function menu(won) {
       resultsContainer.appendChild(element)
     })
 
-    document.querySelector(".replay").addEventListener("click", replay)
+    document.querySelector(".replay").addEventListener("click", restartGame)
   } else {
     h3.textContent = "You've won"
   }
