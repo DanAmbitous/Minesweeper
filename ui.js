@@ -14,6 +14,9 @@ let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
 
+const boardSizeRange = document.querySelector("#board-size-range")
+const mineQuantityRange = document.querySelector("#mine-quantity-range")
+
 const restartButton = document.querySelector(".restart")
 
 restartButton.addEventListener("click", restartGame)
@@ -24,6 +27,18 @@ const menuTemplate = document.querySelector("#menu")
 const resultsContainer = document.querySelector(".results")
 
 stateSetup(MINE_QUANTITY)
+
+boardSizeRange.addEventListener("input", boardSizeControler)
+
+function boardSizeControler() {
+  DIMENSIONS = boardSizeRange.value
+
+  test()
+}
+
+function test() {
+  console.log(DIMENSIONS)
+}
 
 function clickFunctionalities(tile) {
   leftClick(tile, boardPopulating)
