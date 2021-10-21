@@ -7,7 +7,7 @@ import {
 } from "./minesweeper.js"
 
 let DIMENSIONS = 5
-let MINE_QUANTITY = 5
+let MINE_QUANTITY = 1
 
 let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 
@@ -53,12 +53,12 @@ function menu(won) {
   const h3 = clone.querySelector(".title")
   const description = clone.querySelector(".description")
   const replayButton = clone.querySelector(".replay")
+  description.textContent = "Would you like to retry?"
 
   const content = []
 
   if (!won) {
-    h3.textContent = "You've lost"
-    description.textContent = "Would you like to retry?"
+    h3.textContent = "You've lost the game!"
 
     content.push(h3, description, replayButton)
 
@@ -68,7 +68,28 @@ function menu(won) {
 
     document.querySelector(".replay").addEventListener("click", restartGame)
   } else {
-    h3.textContent = "You've won"
+    const unrevealedTiles = []
+
+    const tiles = Array.from(boardContainer.children)
+
+    tiles.forEach((tile) => {
+      if (tile.dataset.status === TILE_STATUSES.HIDDEN) {
+        unrevealedTiles.push(tile)
+      }
+    })
+
+    if (unrevealedTiles.length - MINE_QUANTITY === 0) {
+      h3.textContent = "You've won the game!"
+      content.push(h3, description, replayButton)
+
+      content.forEach((element) => {
+        resultsContainer.appendChild(element)
+      })
+
+      document.querySelector(".replay").addEventListener("click", restartGame)
+
+      resultsContainer.classList.add("victory")
+    }
   }
 }
 
