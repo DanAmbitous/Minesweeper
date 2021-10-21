@@ -110,10 +110,11 @@ input {
   background: #222;
   display: flex;
   flex-direction: column;
+  font-size: 0.6em;
   border-radius: 10px;
 }
 
-.results > h3 {
+.results > h3, p {
   align-self: center;
 }
 
@@ -135,5 +136,13 @@ button {
 
 .button-container {
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
+}
+
+.game-container {
+  width: 7em;
+}
+
+.victory {
+  background-color: gold;
 }
