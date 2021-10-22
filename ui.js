@@ -32,6 +32,9 @@ boardSizeRange.addEventListener("input", boardSizeControler)
 
 function boardSizeControler() {
   DIMENSIONS = boardSizeRange.value
+  boardContainer.style.setProperty("--size", DIMENSIONS)
+
+  restartGame()
 
   test()
 }
