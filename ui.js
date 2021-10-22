@@ -29,14 +29,37 @@ const resultsContainer = document.querySelector(".results")
 stateSetup(MINE_QUANTITY)
 
 boardSizeRange.addEventListener("input", boardSizeControler)
+mineQuantityRange.addEventListener("input", mineQuantityControler)
+
+const tiles = Array.from(boardContainer.children)
+console.log(tiles)
 
 function boardSizeControler() {
+  // Restart alerter for already on-going games
+  // const alreadyRevealedTiles = []
+
+  // tiles.forEach((tile) => {
+  //   if (tile.dataset.status !== TILE_STATUSES.HIDDEN) {
+  //     alreadyRevealedTiles.push(tile)
+  //   }
+  // })
+
+  // if (alreadyRevealedTiles.length > 0) {
+  //   alert("Are you sure you want to proccessed")
+  // }
+
   DIMENSIONS = boardSizeRange.value
   boardContainer.style.setProperty("--size", DIMENSIONS)
 
   restartGame()
 
   test()
+}
+
+function mineQuantityControler() {
+  MINE_QUANTITY = mineQuantityRange.value
+
+  console.log(MINE_QUANTITY)
 }
 
 function test() {
