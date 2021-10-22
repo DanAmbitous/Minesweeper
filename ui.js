@@ -125,6 +125,7 @@ function restartGame() {
   tileAppendment()
 
   resultsContainer.innerHTML = ""
+  resultsContainer.classList.remove("victory")
 }
 
 function tileAppendment() {
