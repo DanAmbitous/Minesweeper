@@ -6,16 +6,16 @@ import {
   TILE_STATUSES,
 } from "./minesweeper.js"
 
-let DIMENSIONS = 5
-let MINE_QUANTITY = 1
+const boardSizeRange = document.querySelector("#board-size-range")
+const mineQuantityRange = document.querySelector("#mine-quantity-range")
+
+let DIMENSIONS = boardSizeRange.value
+let MINE_QUANTITY = mineQuantityRange.value
 
 let boardPopulating = boardTileCreation(DIMENSIONS, MINE_QUANTITY)
 
 const boardContainer = document.querySelector(".board")
 boardContainer.style.setProperty("--size", DIMENSIONS)
-
-const boardSizeRange = document.querySelector("#board-size-range")
-const mineQuantityRange = document.querySelector("#mine-quantity-range")
 
 const restartButton = document.querySelector(".restart")
 
@@ -31,39 +31,45 @@ stateSetup(MINE_QUANTITY)
 boardSizeRange.addEventListener("input", boardSizeControler)
 mineQuantityRange.addEventListener("input", mineQuantityControler)
 
-const tiles = Array.from(boardContainer.children)
-console.log(tiles)
-
 function boardSizeControler() {
-  // Restart alerter for already on-going games
-  // const alreadyRevealedTiles = []
-
-  // tiles.forEach((tile) => {
-  //   if (tile.dataset.status !== TILE_STATUSES.HIDDEN) {
-  //     alreadyRevealedTiles.push(tile)
-  //   }
-  // })
-
-  // if (alreadyRevealedTiles.length > 0) {
-  //   alert("Are you sure you want to proccessed")
-  // }
-
   DIMENSIONS = boardSizeRange.value
   boardContainer.style.setProperty("--size", DIMENSIONS)
 
-  restartGame()
+  const totalTiles = Array.from(boardContainer.children)
+  console.log(totalTiles)
 
-  test()
+  let minimumMines = percentageOfTotal(false, totalTiles)
+  let maximumMines = mineRangeAdjuster(true, totalTiles)
+
+  console.log(totalTiles.length, minimumMines)
+
+  restartGame()
+}
+
+function percentageOfTotal(maximum, totalTiles) {
+  if (!maximum) {
+    return Math.round(
+      (totalTiles.length * (totalTiles.length / 4)) / totalTiles.length
+    )
+  }
+}
+
+function mineRangeAdjuster() {
+  // mineQuantityRange.
+  // console.log("ran")
+  // console.log(boardSizeRange.value, mineQuantityRange.value)
+  // lastMax = mineQuantityRange.max
+  // mineQuantityRange.min = boardSizeRange.value
+  // mineQuantityRange.max = Number(boardSizeRange.value * 5)
+  // console.log(mineQuantityRange.max, lastMax)
+  // if (mineQuantityRange.max < lastMax) {
+  //   console.log("happened")
+  //   mineQuantityRange.value = boardSizeRange.min
+  // }
 }
 
 function mineQuantityControler() {
   MINE_QUANTITY = mineQuantityRange.value
-
-  console.log(MINE_QUANTITY)
-}
-
-function test() {
-  console.log(DIMENSIONS)
 }
 
 function clickFunctionalities(tile) {
@@ -87,7 +93,7 @@ function gameOver(mine) {
   }
 }
 
-restartGame()
+// restartGame()
 
 function menu(won) {
   const clone = menuTemplate.content.cloneNode(true)

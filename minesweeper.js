@@ -50,6 +50,10 @@ export function boardTileCreation(DIMENSIONS, MINE_QUANTITY) {
       }
 
       row.push(tile)
+
+      if (tile.mine) {
+        tile.status = TILE_STATUSES.MINE
+      }
     }
 
     board.push(row)
