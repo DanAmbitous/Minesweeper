@@ -38,20 +38,24 @@ function boardSizeControler() {
   const totalTiles = Array.from(boardContainer.children)
   console.log(totalTiles)
 
-  let minimumMines = percentageOfTotal(false, totalTiles)
-  let maximumMines = mineRangeAdjuster(true, totalTiles)
+  let minimumMines = minimumMinesCalculator(totalTiles)
+  let maximumMines = maximumMinesCalculator(totalTiles)
 
-  console.log(totalTiles.length, minimumMines)
+  console.log(totalTiles.length, minimumMines, maximumMines)
 
   restartGame()
 }
 
-function percentageOfTotal(maximum, totalTiles) {
-  if (!maximum) {
-    return Math.round(
-      (totalTiles.length * (totalTiles.length / 4)) / totalTiles.length
-    )
-  }
+function minimumMinesCalculator(totalTiles) {
+  return Math.round(
+    (totalTiles.length * (totalTiles.length / 4)) / totalTiles.length
+  )
+}
+
+function maximumMinesCalculator(totalTiles) {
+  return Math.round(
+    (totalTiles.length * (totalTiles.length / 2)) / totalTiles.length
+  )
 }
 
 function mineRangeAdjuster() {
