@@ -5,11 +5,14 @@ import {
 } from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")
+const mineNumberIndicator = document.querySelector(".mine-number")
 
 createBoard()
 function createBoard() {
   let BOARD_DIMENSION = 5
   let MINE_QUANTITY = 5
+
+  mineNumberIndicator.textContent = MINE_QUANTITY
 
   let boardLayout = boardPopulation(BOARD_DIMENSION, MINE_QUANTITY)
 
@@ -20,10 +23,17 @@ function createBoard() {
       borderContainerElement.append(tile.tileElement)
 
       tile.tileElement.addEventListener("click", () => {
-        leftClickEvent(tile)
+        leftClickEvent(tile, MINE_QUANTITY)
       })
       tile.tileElement.addEventListener("contextmenu", (e) => {
-        rightClickEvent(e, tile)
+        const updatedMineQuantity = rightClickEvent(
+          e,
+          tile,
+          MINE_QUANTITY,
+          borderContainerElement
+        )
+
+        mineNumberIndicator.textContent = updatedMineQuantity
       })
     })
   })

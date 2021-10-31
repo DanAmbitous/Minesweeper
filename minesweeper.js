@@ -40,7 +40,12 @@ export function leftClickEvent() {
   console.log("Hello World")
 }
 
-export function rightClickEvent(e, tile) {
+export function rightClickEvent(
+  e,
+  tile,
+  MINE_QUANTITY,
+  borderContainerElement
+) {
   e.preventDefault()
 
   if (
@@ -49,6 +54,20 @@ export function rightClickEvent(e, tile) {
   ) {
     if (tile.tileStatus === TILE_STATUSES.HIDDEN) {
       tile.tileStatus = TILE_STATUSES.MARKED
+
+      const markedTiles = []
+
+      const tiles = Array.from(borderContainerElement.children)
+
+      tiles.forEach((tile) => {
+        if (tile.dataset.status === TILE_STATUSES.MARKED) {
+          markedTiles.push(tile)
+        }
+      })
+
+      console.log(markedTiles)
+
+      return MINE_QUANTITY - markedTiles.length
     } else {
       tile.tileStatus = TILE_STATUSES.HIDDEN
     }
