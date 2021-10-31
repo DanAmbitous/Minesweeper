@@ -43,5 +43,14 @@ export function leftClickEvent() {
 export function rightClickEvent(e, tile) {
   e.preventDefault()
 
-  tile.tileStatus = TILE_STATUSES.MARKED
+  if (
+    tile.tileStatus === TILE_STATUSES.HIDDEN ||
+    tile.tileStatus === TILE_STATUSES.MARKED
+  ) {
+    if (tile.tileStatus === TILE_STATUSES.HIDDEN) {
+      tile.tileStatus = TILE_STATUSES.MARKED
+    } else {
+      tile.tileStatus = TILE_STATUSES.HIDDEN
+    }
+  }
 }
