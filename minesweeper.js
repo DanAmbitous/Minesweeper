@@ -8,6 +8,10 @@ export const TILE_STATUSES = {
 export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   const board = []
 
+  const minePositions = minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
+
+  console.log(minePositions)
+
   for (let x = 0; x < BOARD_DIMENSION; x++) {
     const row = []
 
@@ -15,9 +19,18 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
       const tileElement = document.createElement("div")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
 
+      let mine = undefined
+
+      minePositions.forEach((position) => {
+        if (position.x === x && position.y === y) {
+          mine = true
+        }
+      })
+
       const tile = {
         x,
         y,
+        mine,
         tileElement,
         set tileStatus(value) {
           this.tileElement.dataset.status = value
@@ -25,6 +38,10 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
         get tileStatus() {
           return this.tileElement.dataset.status
         },
+      }
+
+      if (tile.mine) {
+        tile.tileStatus = TILE_STATUSES.MINE
       }
 
       row.push(tile)
@@ -36,8 +53,39 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   return board
 }
 
-export function leftClickEvent() {
-  console.log("Hello World")
+export function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
+  const minePositions = []
+
+  while (minePositions.length < MINE_QUANTITY) {
+    const position = {
+      x: randomPosition(BOARD_DIMENSION),
+      y: randomPosition(BOARD_DIMENSION),
+    }
+
+    // if (minePositions.positionUniquenessVerifer()) {
+    //   //Should return false if not unique
+
+    //   minePositions.push(position)
+    // }
+
+    minePositions.push(position)
+  }
+
+  return minePositions
+}
+
+function randomPosition(BOARD_DIMENSION) {
+  return Number(Math.floor(Math.random() * BOARD_DIMENSION))
+}
+
+export function leftClickEvent(tile, MINE_QUANTITY) {
+  if (tile.tileStatus === TILE_STATUSES.HIDDEN) {
+    if (tile.mine) {
+      console.log("defeat")
+    } else {
+      console.log("victory")
+    }
+  }
 }
 
 export function rightClickEvent(
