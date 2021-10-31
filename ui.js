@@ -1,4 +1,8 @@
-import { boardPopulation } from "./minesweeper.js"
+import {
+  boardPopulation,
+  leftClickEvent,
+  rightClickEvent,
+} from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")
 
@@ -14,21 +18,13 @@ function createBoard() {
   boardLayout.forEach((row) => {
     row.forEach((tile) => {
       borderContainerElement.append(tile.tileElement)
+
+      tile.tileElement.addEventListener("click", () => {
+        leftClickEvent(tile)
+      })
+      tile.tileElement.addEventListener("contextmenu", (e) => {
+        rightClickEvent(e, tile)
+      })
     })
   })
-}
-
-const tiles = Array.from(borderContainerElement.children)
-
-tiles.forEach((element) => {
-  element.addEventListener("click", clickHandler)
-  element.addEventListener("contextMenu", rightClickHandler)
-})
-
-function clickHandler() {
-  console.log("clicked!")
-}
-
-function rightClickHandler(params) {
-  console.log(`right clicked!`)
 }

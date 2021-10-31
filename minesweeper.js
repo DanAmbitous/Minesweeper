@@ -19,6 +19,12 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
         x,
         y,
         tileElement,
+        set tileStatus(value) {
+          this.tileElement.dataset.status = value
+        },
+        get tileStatus() {
+          return this.tileElement.dataset.status
+        },
       }
 
       row.push(tile)
@@ -28,4 +34,14 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   }
 
   return board
+}
+
+export function leftClickEvent() {
+  console.log("Hello World")
+}
+
+export function rightClickEvent(e, tile) {
+  e.preventDefault()
+
+  tile.tileStatus = TILE_STATUSES.MARKED
 }
