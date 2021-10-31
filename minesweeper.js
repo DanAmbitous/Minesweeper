@@ -48,16 +48,16 @@ export function rightClickEvent(
 ) {
   e.preventDefault()
 
+  const markedTiles = []
+
+  const tiles = Array.from(borderContainerElement.children)
+
   if (
     tile.tileStatus === TILE_STATUSES.HIDDEN ||
     tile.tileStatus === TILE_STATUSES.MARKED
   ) {
     if (tile.tileStatus === TILE_STATUSES.HIDDEN) {
       tile.tileStatus = TILE_STATUSES.MARKED
-
-      const markedTiles = []
-
-      const tiles = Array.from(borderContainerElement.children)
 
       tiles.forEach((tile) => {
         if (tile.dataset.status === TILE_STATUSES.MARKED) {
@@ -70,6 +70,14 @@ export function rightClickEvent(
       return MINE_QUANTITY - markedTiles.length
     } else {
       tile.tileStatus = TILE_STATUSES.HIDDEN
+
+      tiles.forEach((tile) => {
+        if (tile.dataset.status === TILE_STATUSES.MARKED) {
+          markedTiles.push(tile)
+        }
+      })
+
+      return MINE_QUANTITY - markedTiles.length
     }
   }
 }
