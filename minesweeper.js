@@ -62,16 +62,29 @@ export function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
       y: randomPosition(BOARD_DIMENSION),
     }
 
-    // if (minePositions.positionUniquenessVerifer()) {
-    //   //Should return false if not unique
-
-    //   minePositions.push(position)
-    // }
-
-    minePositions.push(position)
+    const unique = positionUniquenessVerifer(minePositions, position)
+    console.log(unique)
+    if (unique) {
+      console.log("hi")
+      minePositions.push(position)
+    } else {
+      minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
+    }
   }
 
   return minePositions
+}
+
+function positionUniquenessVerifer(minePositions, position) {
+  if (minePositions.length <= 0) {
+    minePositions.forEach((minePosition) => {
+      if (minePosition.x === position.x && minePosition.y === position.y) {
+        return false
+      }
+    })
+  } else {
+    return true
+  }
 }
 
 function randomPosition(BOARD_DIMENSION) {
