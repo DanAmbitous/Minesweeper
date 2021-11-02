@@ -8,9 +8,7 @@ export const TILE_STATUSES = {
 export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   const board = []
 
-  const minePositions = minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
-
-  console.log(minePositions)
+  let minePositions = minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
 
   for (let x = 0; x < BOARD_DIMENSION; x++) {
     const row = []
@@ -54,38 +52,48 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
 }
 
 export function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
-  const minePositions = []
+  const verifiedMinePositions = new Set()
+  const readyMinePositions = []
 
-  while (minePositions.length < MINE_QUANTITY) {
-    const position = {
-      x: randomPosition(BOARD_DIMENSION),
-      y: randomPosition(BOARD_DIMENSION),
-    }
+  while (verifiedMinePositions.size < MINE_QUANTITY) {
+    const position = []
+    let x = randomPosition(BOARD_DIMENSION)
+    let y = randomPosition(BOARD_DIMENSION)
 
-    const unique = positionUniquenessVerifer(minePositions, position)
-    console.log(unique)
-    if (unique) {
-      console.log("hi")
-      minePositions.push(position)
-    } else {
-      minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
-    }
+    position.push(x, y)
+
+    verifiedMinePositions.add([x, y])
   }
 
-  return minePositions
+  verifiedMinePositions.forEach((position) => {
+    console.log(position)
+    const objectifiedPosition = Object.assign({}, position)
+
+    const keyrenamement = {
+      x: objectifiedPosition[0],
+      y: objectifiedPosition[1],
+    }
+
+    console.log(objectifiedPosition)
+
+    readyMinePositions.push(keyrenamement)
+  })
+
+  readyMinePositions.forEach((element) => {})
+
+  console.log(verifiedMinePositions, readyMinePositions)
+
+  return readyMinePositions
 }
 
-function positionUniquenessVerifer(minePositions, position) {
-  if (minePositions.length <= 0) {
-    minePositions.forEach((minePosition) => {
-      if (minePosition.x === position.x && minePosition.y === position.y) {
-        return false
-      }
-    })
-  } else {
-    return true
-  }
-}
+// function minePosition(BOARD_DIMENSION) {
+//   const position = {
+//     x: randomPosition(BOARD_DIMENSION),
+//     y: randomPosition(BOARD_DIMENSION),
+//   }
+
+//   return position
+// }
 
 function randomPosition(BOARD_DIMENSION) {
   return Number(Math.floor(Math.random() * BOARD_DIMENSION))
