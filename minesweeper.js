@@ -10,6 +10,8 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
 
   let minePositions = minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
 
+  // minePositions = [{ x: 1, y: 2 }] //Temp. Hard-coded data
+
   for (let x = 0; x < BOARD_DIMENSION; x++) {
     const row = []
 
@@ -51,49 +53,51 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   return board
 }
 
-export function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
-  const verifiedMinePositions = new Set()
-  const readyMinePositions = []
-
-  while (verifiedMinePositions.size < MINE_QUANTITY) {
-    const position = []
-    let x = randomPosition(BOARD_DIMENSION)
-    let y = randomPosition(BOARD_DIMENSION)
-
-    position.push(x, y)
-
-    verifiedMinePositions.add([x, y])
-  }
-
-  verifiedMinePositions.forEach((position) => {
-    console.log(position)
-    const objectifiedPosition = Object.assign({}, position)
-
-    const keyrenamement = {
-      x: objectifiedPosition[0],
-      y: objectifiedPosition[1],
+function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
+  let minePositions = [{ x: 10, y: 10 }]
+  let i = 0
+  while (minePositions.length <= MINE_QUANTITY) {
+    let minePosition = {
+      x: randomPosition(BOARD_DIMENSION),
+      y: randomPosition(BOARD_DIMENSION),
     }
 
-    console.log(objectifiedPosition)
+    let result = minePositionsVerifier(minePositions, minePosition)
+    console.log(result)
+    if (result) {
+      minePositions.push(minePosition)
+    } else if (result == false) {
+      minePosition = {
+        x: randomPosition(BOARD_DIMENSION),
+        y: randomPosition(BOARD_DIMENSION),
+      }
 
-    readyMinePositions.push(keyrenamement)
-  })
+      minePositions.push(minePosition)
+    }
+  }
 
-  readyMinePositions.forEach((element) => {})
-
-  console.log(verifiedMinePositions, readyMinePositions)
-
-  return readyMinePositions
+  return minePositions
 }
 
-// function minePosition(BOARD_DIMENSION) {
-//   const position = {
-//     x: randomPosition(BOARD_DIMENSION),
-//     y: randomPosition(BOARD_DIMENSION),
-//   }
+function minePositionsVerifier(minePositions, minePosition) {
+  let add
 
-//   return position
-// }
+  minePositions.forEach((position) => {
+    if (position.x === minePosition.x && position.y === minePosition.y) {
+      add = false
+
+      return add
+    } else {
+      add = true
+
+      return add
+    }
+
+    return add
+  })
+
+  return add
+}
 
 function randomPosition(BOARD_DIMENSION) {
   return Number(Math.floor(Math.random() * BOARD_DIMENSION))
