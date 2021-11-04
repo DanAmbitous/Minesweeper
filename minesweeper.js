@@ -10,8 +10,6 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
 
   let minePositions = minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY)
 
-  // minePositions = [{ x: 1, y: 2 }] //Temp. Hard-coded data
-
   for (let x = 0; x < BOARD_DIMENSION; x++) {
     const row = []
 
@@ -54,49 +52,28 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
 }
 
 function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
-  let minePositions = [{ x: 10, y: 10 }]
-  let i = 0
-  while (minePositions.length <= MINE_QUANTITY) {
-    let minePosition = {
+  const minePositions = []
+
+  while (minePositions.length < MINE_QUANTITY) {
+    const position = {
       x: randomPosition(BOARD_DIMENSION),
       y: randomPosition(BOARD_DIMENSION),
     }
 
-    let result = minePositionsVerifier(minePositions, minePosition)
-    console.log(result)
-    if (result) {
-      minePositions.push(minePosition)
-    } else if (result == false) {
-      minePosition = {
-        x: randomPosition(BOARD_DIMENSION),
-        y: randomPosition(BOARD_DIMENSION),
-      }
+    console.log(position)
 
-      minePositions.push(minePosition)
+    const isElementUnique = minePositions.some(
+      (p) => p.x === position.x && p.y === position.y
+    )
+
+    console.log(isElementUnique)
+
+    if (!isElementUnique) {
+      minePositions.push(position)
     }
   }
 
   return minePositions
-}
-
-function minePositionsVerifier(minePositions, minePosition) {
-  let add
-
-  minePositions.forEach((position) => {
-    if (position.x === minePosition.x && position.y === minePosition.y) {
-      add = false
-
-      return add
-    } else {
-      add = true
-
-      return add
-    }
-
-    return add
-  })
-
-  return add
 }
 
 function randomPosition(BOARD_DIMENSION) {
