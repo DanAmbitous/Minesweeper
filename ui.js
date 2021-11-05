@@ -2,6 +2,7 @@ import {
   boardPopulation,
   leftClickEvent,
   rightClickEvent,
+  boardInfo,
 } from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")
@@ -9,8 +10,8 @@ const mineNumberIndicator = document.querySelector(".mine-number")
 
 createBoard()
 function createBoard() {
-  let BOARD_DIMENSION = 5
-  let MINE_QUANTITY = 5
+  let BOARD_DIMENSION = 2
+  let MINE_QUANTITY = 2
 
   mineNumberIndicator.textContent = MINE_QUANTITY
 
@@ -23,7 +24,7 @@ function createBoard() {
       borderContainerElement.append(tile.tileElement)
 
       tile.tileElement.addEventListener("click", () => {
-        leftClickEvent(tile, MINE_QUANTITY)
+        leftClickEvent(tile, boardLayout)
       })
       tile.tileElement.addEventListener("contextmenu", (e) => {
         const updatedMineQuantity = rightClickEvent(
@@ -37,4 +38,6 @@ function createBoard() {
       })
     })
   })
+
+  boardInfo(boardLayout)
 }

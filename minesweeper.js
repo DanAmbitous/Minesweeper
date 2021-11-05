@@ -17,7 +17,7 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
       const tileElement = document.createElement("div")
       tileElement.dataset.status = TILE_STATUSES.HIDDEN
 
-      let mine = undefined
+      let mine = false
 
       minePositions.forEach((position) => {
         if (position.x === x && position.y === y) {
@@ -39,7 +39,7 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
       }
 
       if (tile.mine) {
-        tile.tileStatus = TILE_STATUSES.MINE
+        tile.tileElement.style.backgroundColor = "red"
       }
 
       row.push(tile)
@@ -60,13 +60,9 @@ function minePositionDeterminer(BOARD_DIMENSION, MINE_QUANTITY) {
       y: randomPosition(BOARD_DIMENSION),
     }
 
-    console.log(position)
-
     const isElementUnique = minePositions.some(
       (p) => p.x === position.x && p.y === position.y
     )
-
-    console.log(isElementUnique)
 
     if (!isElementUnique) {
       minePositions.push(position)
@@ -80,14 +76,45 @@ function randomPosition(BOARD_DIMENSION) {
   return Number(Math.floor(Math.random() * BOARD_DIMENSION))
 }
 
-export function leftClickEvent(tile, MINE_QUANTITY) {
-  if (tile.tileStatus === TILE_STATUSES.HIDDEN) {
-    if (tile.mine) {
-      console.log("defeat")
-    } else {
+export function leftClickEvent(tile, boardLayout) {
+  tile.tileStatus = TILE_STATUSES.NUMBER
+
+  const unminedTiles = boardInfo(boardLayout)
+
+  if (!tile.mine) {
+    console.log(!tile.mine, tile.mine)
+    gameEnd(!tile.mine, unminedTiles, boardLayout)
+  } else {
+    gameEnd(!tile.mine, unminedTiles, boardLayout)
+  }
+}
+
+function gameEnd(safeTile, unminedTiles, boardLayout) {
+  unminedTiles = boardInfo(boardLayout)
+  console.log(safeTile)
+  if (safeTile) {
+    if (unminedTiles.length === 0) {
       console.log("victory")
     }
+  } else {
+    console.log("defeat")
   }
+}
+
+export function boardInfo(boardLayout) {
+  const unminedTiles = []
+
+  boardLayout.forEach((row) => {
+    row.forEach((tile) => {
+      if (!tile.mine) {
+        if (tile.tileElement.dataset.status === TILE_STATUSES.HIDDEN) {
+          unminedTiles.push(tile)
+        }
+      }
+    })
+  })
+
+  return unminedTiles
 }
 
 export function rightClickEvent(
@@ -114,8 +141,6 @@ export function rightClickEvent(
           markedTiles.push(tile)
         }
       })
-
-      console.log(markedTiles)
 
       return MINE_QUANTITY - markedTiles.length
     } else {
