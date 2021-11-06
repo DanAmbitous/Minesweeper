@@ -5,6 +5,7 @@ export const TILE_STATUSES = {
   MARKED: "marked",
 }
 
+const headerContainer = document.querySelector(".subtext")
 const gameResolutionContainer = document.querySelector(
   ".game-resolution-container"
 )
@@ -178,12 +179,6 @@ function showGameResolution() {
   gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
 
-export function timer() {
-  const currentTime = Date.now()
-
-  setInterval(() => {
-    let elapsedTime = Date.now() - currentTime
-
-    return Math.floor(elapsedTime / 1000)
-  }, 1000)
+export function scoreDecrementer() {
+  headerContainer.querySelector(".score").textContent = `1000`
 }

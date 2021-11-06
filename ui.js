@@ -3,12 +3,11 @@ import {
   leftClickEvent,
   rightClickEvent,
   boardInfo,
-  timer,
+  scoreDecrementer,
 } from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")
 const mineNumberIndicator = document.querySelector(".mine-number")
-const headerContainer = document.querySelector(".subtext")
 
 createBoard()
 function createBoard() {
@@ -61,7 +60,5 @@ function createBoard() {
 
   boardInfo(boardLayout)
 
-  const time = timer()
-
-  headerContainer.querySelector(".timer").textContent = time
+  scoreDecrementer()
 }
