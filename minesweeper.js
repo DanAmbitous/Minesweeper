@@ -5,6 +5,10 @@ export const TILE_STATUSES = {
   MARKED: "marked",
 }
 
+const gameResolutionContainer = document.querySelector(
+  ".game-resolution-container"
+)
+
 export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
   const board = []
 
@@ -105,11 +109,11 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
-  console.log("Victory")
+  gameResolutionContainer.querySelector(".game-end-status").textContent = "Won"
 }
 
 function defeat() {
-  console.log("Defeat")
+  gameResolutionContainer.querySelector(".game-end-status").textContent = "Lost"
 }
 
 export function boardInfo(boardLayout) {

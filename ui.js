@@ -54,7 +54,16 @@ function createBoard() {
         }
       })
     })
+
+    timer()
   })
 
   boardInfo(boardLayout)
+}
+
+function timer() {
+  const date = new Date()
+  const currentDate = Date.now()
+
+  console.log(date.getTime(), currentDate)
 }
