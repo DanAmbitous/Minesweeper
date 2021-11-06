@@ -77,28 +77,39 @@ function randomPosition(BOARD_DIMENSION) {
 }
 
 export function leftClickEvent(tile, boardLayout) {
-  tile.tileStatus = TILE_STATUSES.NUMBER
+  if (!tile.mine && tile.tileStatus != TILE_STATUSES.MARKED) {
+    tile.tileStatus = TILE_STATUSES.NUMBER
+  }
 
   const unminedTiles = boardInfo(boardLayout)
 
   if (!tile.mine) {
-    console.log(!tile.mine, tile.mine)
     gameEnd(!tile.mine, unminedTiles, boardLayout)
   } else {
     gameEnd(!tile.mine, unminedTiles, boardLayout)
+
+    sessionStorage.setItem("mineActive", true)
   }
 }
 
 function gameEnd(safeTile, unminedTiles, boardLayout) {
   unminedTiles = boardInfo(boardLayout)
-  console.log(safeTile)
+
   if (safeTile) {
     if (unminedTiles.length === 0) {
-      console.log("victory")
+      victory()
     }
   } else {
-    console.log("defeat")
+    defeat()
   }
+}
+
+function victory() {
+  console.log("Victory")
+}
+
+function defeat() {
+  console.log("Defeat")
 }
 
 export function boardInfo(boardLayout) {
@@ -107,7 +118,10 @@ export function boardInfo(boardLayout) {
   boardLayout.forEach((row) => {
     row.forEach((tile) => {
       if (!tile.mine) {
-        if (tile.tileElement.dataset.status === TILE_STATUSES.HIDDEN) {
+        if (
+          tile.tileElement.dataset.status === TILE_STATUSES.HIDDEN ||
+          tile.tileElement.dataset.status === TILE_STATUSES.MARKED
+        ) {
           unminedTiles.push(tile)
         }
       }
@@ -117,14 +131,7 @@ export function boardInfo(boardLayout) {
   return unminedTiles
 }
 
-export function rightClickEvent(
-  e,
-  tile,
-  MINE_QUANTITY,
-  borderContainerElement
-) {
-  e.preventDefault()
-
+export function rightClickEvent(tile, MINE_QUANTITY, borderContainerElement) {
   const markedTiles = []
 
   const tiles = Array.from(borderContainerElement.children)

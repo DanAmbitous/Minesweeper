@@ -13,6 +13,8 @@ function createBoard() {
   let BOARD_DIMENSION = 2
   let MINE_QUANTITY = 2
 
+  sessionStorage.setItem("mineActive", false)
+
   mineNumberIndicator.textContent = MINE_QUANTITY
 
   let boardLayout = boardPopulation(BOARD_DIMENSION, MINE_QUANTITY)
@@ -24,17 +26,32 @@ function createBoard() {
       borderContainerElement.append(tile.tileElement)
 
       tile.tileElement.addEventListener("click", () => {
-        leftClickEvent(tile, boardLayout)
+        const avaliableTiles = boardInfo(boardLayout)
+
+        const mineStatus = JSON.parse(sessionStorage.getItem("mineActive"))
+
+        if (avaliableTiles.length === 0 || mineStatus) {
+          return
+        } else {
+          leftClickEvent(tile, boardLayout)
+        }
       })
       tile.tileElement.addEventListener("contextmenu", (e) => {
-        const updatedMineQuantity = rightClickEvent(
-          e,
-          tile,
-          MINE_QUANTITY,
-          borderContainerElement
-        )
+        e.preventDefault()
 
-        mineNumberIndicator.textContent = updatedMineQuantity
+        const avaliableTiles = boardInfo(boardLayout)
+
+        if (avaliableTiles.length === 0) {
+          return
+        } else {
+          const updatedMineQuantity = rightClickEvent(
+            tile,
+            MINE_QUANTITY,
+            borderContainerElement
+          )
+
+          mineNumberIndicator.textContent = updatedMineQuantity
+        }
       })
     })
   })
