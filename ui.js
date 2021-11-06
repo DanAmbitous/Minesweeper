@@ -7,9 +7,6 @@ import {
 
 const borderContainerElement = document.querySelector(".board")
 const mineNumberIndicator = document.querySelector(".mine-number")
-const gameResolutionContainer = document.querySelector(
-  ".game-resolution-container"
-)
 
 createBoard()
 function createBoard() {
@@ -39,6 +36,7 @@ function createBoard() {
           leftClickEvent(tile, boardLayout)
         }
       })
+
       tile.tileElement.addEventListener("contextmenu", (e) => {
         e.preventDefault()
 
@@ -57,18 +55,7 @@ function createBoard() {
         }
       })
     })
-
-    timer()
   })
 
   boardInfo(boardLayout)
 }
-
-function timer() {
-  const date = new Date()
-  const currentDate = Date.now()
-
-  console.log(date.getTime(), currentDate)
-}
-
-function showGameResolution() {}

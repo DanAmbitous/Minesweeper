@@ -109,11 +109,17 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
+  console.log("victory")
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Won"
+
+  showGameResolution()
 }
 
 function defeat() {
+  console.log("defeat")
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Lost"
+
+  showGameResolution()
 }
 
 export function boardInfo(boardLayout) {
@@ -166,4 +172,8 @@ export function rightClickEvent(tile, MINE_QUANTITY, borderContainerElement) {
       return MINE_QUANTITY - markedTiles.length
     }
   }
+}
+
+function showGameResolution() {
+  gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
