@@ -7,6 +7,9 @@ import {
 
 const borderContainerElement = document.querySelector(".board")
 const mineNumberIndicator = document.querySelector(".mine-number")
+const gameResolutionContainer = document.querySelector(
+  ".game-resolution-container"
+)
 
 createBoard()
 function createBoard() {
@@ -67,3 +70,5 @@ function timer() {
 
   console.log(date.getTime(), currentDate)
 }
+
+function showGameResolution() {}
