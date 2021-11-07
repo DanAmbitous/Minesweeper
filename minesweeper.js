@@ -119,8 +119,7 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
-  console.log("victory")
-  scoreCounter(true)
+  scoreCounter(false)
 
   sessionStorage.setItem("gameRunning", false)
 
@@ -130,6 +129,10 @@ function victory() {
 }
 
 function defeat() {
+  scoreCounter(true)
+
+  sessionStorage.setItem("gameRunning", false)
+
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Lost"
 
   showGameResolution()
@@ -193,30 +196,45 @@ function showGameResolution() {
   gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
 
-export function scoreCounter(gameEnd) {
-  let gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
-
+export function scoreCounter(mine) {
   let initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
 
-  const scoreCounter = JSON.parse(sessionStorage.getItem("scoreCounter"))
+  if (!mine) {
+    let gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
 
-  if (initialClick) {
-    let score = 1000
+    const scoreCounter = JSON.parse(sessionStorage.getItem("scoreCounter"))
 
-    sessionStorage.setItem("score", score)
-
-    headerContainer.querySelector(".score").textContent = score
-
-    let scoreDecreasing = setInterval(() => {
-      score -= 10
+    if (initialClick) {
+      let score = 1000
 
       sessionStorage.setItem("score", score)
 
       headerContainer.querySelector(".score").textContent = score
-    }, 1000)
 
-    sessionStorage.setItem("scoreCounter", scoreDecreasing)
-  } else if (gameStatus) {
-    clearInterval(scoreCounter)
+      let scoreDecreasing = setInterval(() => {
+        score -= 10
+
+        sessionStorage.setItem("score", score)
+
+        headerContainer.querySelector(".score").textContent = score
+      }, 1000)
+
+      sessionStorage.setItem("scoreCounter", scoreDecreasing)
+    } else if (gameStatus) {
+      clearInterval(scoreCounter)
+    }
+  } else {
+    const scoreCounter = sessionStorage.getItem("scoreCounter")
+    const score = sessionStorage.getItem("score")
+
+    if (initialClick) {
+      clearInterval(scoreCounter)
+
+      headerContainer.querySelector(".score").textContent = score
+    } else {
+      clearInterval(scoreCounter)
+
+      headerContainer.querySelector(".score").textContent = score
+    }
   }
 }

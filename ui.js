@@ -14,9 +14,12 @@ function createBoard() {
   let BOARD_DIMENSION = 2
   let MINE_QUANTITY = 2
 
+  const INITIAL_SCORE = 1000
+
   sessionStorage.setItem("gameRunning", true)
   sessionStorage.setItem("mineActive", false)
   sessionStorage.setItem("initialClick", true)
+  sessionStorage.setItem("score", INITIAL_SCORE)
 
   mineNumberIndicator.textContent = MINE_QUANTITY
 
