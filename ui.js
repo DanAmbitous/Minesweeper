@@ -34,13 +34,6 @@ function createBoard() {
         const mineStatus = JSON.parse(sessionStorage.getItem("mineActive"))
 
         if (avaliableTiles.length === 0 || mineStatus) {
-          // sessionStorage.setItem("gameRunning", false)
-
-          // let data = sessionStorage.getItem("gameRunning")
-
-          // console.log(data + " asd")
-          // scoreCounter()
-
           return
         } else {
           leftClickEvent(tile, boardLayout)

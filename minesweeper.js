@@ -87,12 +87,10 @@ export function leftClickEvent(tile, boardLayout) {
   }
 
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
-  // let gameInitiation = sessionStorage.getItem("initialClick")
 
   console.log(gameInitiation)
   if (gameInitiation) {
-    console.log("sfd")
-    scoreCounter()
+    scoreCounter(false)
   }
 
   const unminedTiles = boardInfo(boardLayout)
@@ -121,6 +119,8 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
+  scoreCounter(true)
+
   sessionStorage.setItem("gameRunning", false)
 
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Won"
@@ -192,26 +192,36 @@ function showGameResolution() {
   gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
 
-export function scoreCounter() {
-  let gameStatus = sessionStorage.getItem("gameRunning")
-  let initialClick = sessionStorage.getItem("initialClick")
-  console.groupEnd(initialClick)
-  if (initialClick) {
-    let score = 1000
+export function scoreCounter(gameEnd) {
+  let gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
 
-    sessionStorage.setItem("score", score)
+  let initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
 
-    headerContainer.querySelector(".score").textContent = score
+  let scoreDecreasing
 
-    let scoreDecreasing = setInterval(() => {
-      score -= 10
+  if (initialClick || gameStatus) {
+    if (initialClick) {
+      let score = 1000
 
       sessionStorage.setItem("score", score)
 
       headerContainer.querySelector(".score").textContent = score
-    }, 1000)
-  } else {
-    let data = sessionStorage.getItem("score")
-    console.log(data)
+
+      scoreDecreasing = setInterval(() => {
+        score -= 10
+
+        sessionStorage.setItem("score", score)
+
+        headerContainer.querySelector(".score").textContent = score
+      }, 1000)
+
+      sessionStorage.setItem("key", scoreDecreasing)
+    }
+
+    if (gameEnd) {
+      console.log(scoreDecreasing)
+
+      clearInterval(scoreDecreasing)
+    }
   }
 }
