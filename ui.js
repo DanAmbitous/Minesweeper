@@ -3,7 +3,6 @@ import {
   leftClickEvent,
   rightClickEvent,
   boardInfo,
-  scoreCounter,
 } from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")

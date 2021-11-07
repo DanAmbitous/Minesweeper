@@ -90,7 +90,7 @@ export function leftClickEvent(tile, boardLayout) {
 
   if (gameInitiation) {
     console.log("initial")
-    scoreCounter(false)
+    scoreMangement(false)
   }
 
   const unminedTiles = boardInfo(boardLayout)
@@ -119,7 +119,7 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
-  scoreCounter(false)
+  scoreMangement(false)
 
   sessionStorage.setItem("gameRunning", false)
 
@@ -129,7 +129,7 @@ function victory() {
 }
 
 function defeat() {
-  scoreCounter(true)
+  scoreMangement(true)
 
   sessionStorage.setItem("gameRunning", false)
 
@@ -196,14 +196,14 @@ function showGameResolution() {
   gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
 
-export function scoreCounter(mine) {
-  let initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
+export function scoreMangement(mine) {
+  const initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
+  const gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
+  const scoreCounter = sessionStorage.getItem("scoreCounter")
+
+  console.log(initialClick, gameStatus)
 
   if (!mine) {
-    let gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
-
-    const scoreCounter = JSON.parse(sessionStorage.getItem("scoreCounter"))
-
     if (initialClick) {
       let score = 1000
 
@@ -221,6 +221,10 @@ export function scoreCounter(mine) {
 
       sessionStorage.setItem("scoreCounter", scoreDecreasing)
     } else if (gameStatus) {
+      const score = sessionStorage.getItem("score")
+
+      scoreAssigner(score)
+
       clearInterval(scoreCounter)
     }
   } else {
@@ -231,10 +235,18 @@ export function scoreCounter(mine) {
       clearInterval(scoreCounter)
 
       headerContainer.querySelector(".score").textContent = score
+
+      scoreAssigner(score)
     } else {
       clearInterval(scoreCounter)
 
       headerContainer.querySelector(".score").textContent = score
+
+      scoreAssigner(score)
     }
   }
+}
+
+function scoreAssigner(score) {
+  gameResolutionContainer.querySelector(".score-played").textContent = score
 }
