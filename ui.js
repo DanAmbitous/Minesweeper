@@ -3,7 +3,7 @@ import {
   leftClickEvent,
   rightClickEvent,
   boardInfo,
-  scoreDecrementer,
+  scoreCounter,
 } from "./minesweeper.js"
 
 const borderContainerElement = document.querySelector(".board")
@@ -14,7 +14,9 @@ function createBoard() {
   let BOARD_DIMENSION = 2
   let MINE_QUANTITY = 2
 
+  sessionStorage.setItem("gameRunning", true)
   sessionStorage.setItem("mineActive", false)
+  sessionStorage.setItem("initialClick", true)
 
   mineNumberIndicator.textContent = MINE_QUANTITY
 
@@ -32,6 +34,13 @@ function createBoard() {
         const mineStatus = JSON.parse(sessionStorage.getItem("mineActive"))
 
         if (avaliableTiles.length === 0 || mineStatus) {
+          // sessionStorage.setItem("gameRunning", false)
+
+          // let data = sessionStorage.getItem("gameRunning")
+
+          // console.log(data + " asd")
+          // scoreCounter()
+
           return
         } else {
           leftClickEvent(tile, boardLayout)
@@ -59,6 +68,4 @@ function createBoard() {
   })
 
   boardInfo(boardLayout)
-
-  scoreDecrementer()
 }

@@ -86,6 +86,15 @@ export function leftClickEvent(tile, boardLayout) {
     tile.tileStatus = TILE_STATUSES.NUMBER
   }
 
+  let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
+  // let gameInitiation = sessionStorage.getItem("initialClick")
+
+  console.log(gameInitiation)
+  if (gameInitiation) {
+    console.log("sfd")
+    scoreCounter()
+  }
+
   const unminedTiles = boardInfo(boardLayout)
 
   if (!tile.mine) {
@@ -95,6 +104,8 @@ export function leftClickEvent(tile, boardLayout) {
 
     sessionStorage.setItem("mineActive", true)
   }
+
+  sessionStorage.setItem("initialClick", false)
 }
 
 function gameEnd(safeTile, unminedTiles, boardLayout) {
@@ -110,17 +121,19 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
-  console.log("victory")
+  sessionStorage.setItem("gameRunning", false)
+
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Won"
 
   showGameResolution()
 }
 
 function defeat() {
-  console.log("defeat")
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Lost"
 
   showGameResolution()
+
+  sessionStorage.setItem("gameRunning", false)
 }
 
 export function boardInfo(boardLayout) {
@@ -179,6 +192,26 @@ function showGameResolution() {
   gameResolutionContainer.classList.remove("game-resolution-hidden")
 }
 
-export function scoreDecrementer() {
-  headerContainer.querySelector(".score").textContent = `1000`
+export function scoreCounter() {
+  let gameStatus = sessionStorage.getItem("gameRunning")
+  let initialClick = sessionStorage.getItem("initialClick")
+  console.groupEnd(initialClick)
+  if (initialClick) {
+    let score = 1000
+
+    sessionStorage.setItem("score", score)
+
+    headerContainer.querySelector(".score").textContent = score
+
+    let scoreDecreasing = setInterval(() => {
+      score -= 10
+
+      sessionStorage.setItem("score", score)
+
+      headerContainer.querySelector(".score").textContent = score
+    }, 1000)
+  } else {
+    let data = sessionStorage.getItem("score")
+    console.log(data)
+  }
 }
