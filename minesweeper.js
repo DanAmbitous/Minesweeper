@@ -89,6 +89,7 @@ export function leftClickEvent(tile, boardLayout) {
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
 
   if (gameInitiation) {
+    console.log("initial")
     scoreCounter(false)
   }
 
@@ -118,6 +119,7 @@ function gameEnd(safeTile, unminedTiles, boardLayout) {
 }
 
 function victory() {
+  console.log("victory")
   scoreCounter(true)
 
   sessionStorage.setItem("gameRunning", false)
@@ -196,16 +198,16 @@ export function scoreCounter(gameEnd) {
 
   let initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
 
-  let scoreDecreasing
+  const scoreCounter = JSON.parse(sessionStorage.getItem("scoreCounter"))
 
-  if (initialClick || gameStatus) {
+  if (initialClick) {
     let score = 1000
 
     sessionStorage.setItem("score", score)
 
     headerContainer.querySelector(".score").textContent = score
 
-    scoreDecreasing = setInterval(() => {
+    let scoreDecreasing = setInterval(() => {
       score -= 10
 
       sessionStorage.setItem("score", score)
@@ -213,10 +215,8 @@ export function scoreCounter(gameEnd) {
       headerContainer.querySelector(".score").textContent = score
     }, 1000)
 
-    sessionStorage.setItem("key", scoreDecreasing)
-
-    if (gameEnd) {
-      clearInterval(scoreDecreasing)
-    }
+    sessionStorage.setItem("scoreCounter", scoreDecreasing)
+  } else if (gameStatus) {
+    clearInterval(scoreCounter)
   }
 }
