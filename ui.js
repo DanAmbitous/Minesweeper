@@ -10,8 +10,8 @@ const mineNumberIndicator = document.querySelector(".mine-number")
 
 createBoard()
 function createBoard() {
-  let BOARD_DIMENSION = 2
-  let MINE_QUANTITY = 2
+  let BOARD_DIMENSION = 5
+  let MINE_QUANTITY = 5
 
   const INITIAL_SCORE = 1000
 
@@ -38,7 +38,7 @@ function createBoard() {
         if (avaliableTiles.length === 0 || mineStatus) {
           return
         } else {
-          leftClickEvent(tile, boardLayout)
+          leftClickEvent(boardLayout, tile)
         }
       })
 

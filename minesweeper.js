@@ -81,23 +81,44 @@ function randomPosition(BOARD_DIMENSION) {
   return Number(Math.floor(Math.random() * BOARD_DIMENSION))
 }
 
-export function leftClickEvent(tile, boardLayout) {
-  if (!tile.mine && tile.tileStatus != TILE_STATUSES.MARKED) {
-    tile.tileStatus = TILE_STATUSES.NUMBER
-  }
-
+export function leftClickEvent(boardLayout, tile) {
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
 
-  if (gameInitiation) {
-    console.log("initial")
-    scoreMangement(false)
+  if (!tile.mine && tile.tileStatus === TILE_STATUSES.HIDDEN) {
+    tile.tileStatus = TILE_STATUSES.NUMBER
+
+    if (gameInitiation) {
+      scoreMangement(false)
+    }
+
+    const neighbouringTiles = nearbyTiles(tile, boardLayout)
+    const minedTiles = neighbouringTiles.filter((t) => t.mine)
+
+    if (minedTiles.length === 0) {
+      neighbouringTiles.forEach(leftClickEvent.bind(null, boardLayout))
+
+      //Alternative way
+      /*
+            neighbouringTiles.forEach((tile) => {
+        leftClickEvent.bind(null, boardLayout)
+
+        leftClickEvent(boardLayout, tile)
+      }
+       */
+    } else {
+      tile.tileElement.textContent = minedTiles.length
+    }
   }
 
-  const unminedTiles = boardInfo(boardLayout)
+  const unminedTiles = boardInfo(boardLayout, tile)
 
   if (!tile.mine) {
+    console.log("hi")
+    console.log(tile.mine, unminedTiles, boardLayout)
+
     gameEnd(!tile.mine, unminedTiles, boardLayout)
   } else {
+    console.log("hi2")
     gameEnd(!tile.mine, unminedTiles, boardLayout)
 
     sessionStorage.setItem("mineActive", true)
@@ -108,7 +129,7 @@ export function leftClickEvent(tile, boardLayout) {
 
 function gameEnd(safeTile, unminedTiles, boardLayout) {
   unminedTiles = boardInfo(boardLayout)
-
+  console.log(safeTile, unminedTiles, boardLayout)
   if (safeTile) {
     if (unminedTiles.length === 0) {
       victory()
@@ -140,10 +161,22 @@ function defeat() {
   sessionStorage.setItem("gameRunning", false)
 }
 
-export function boardInfo(boardLayout) {
+export function boardInfo(boardLayout, tile) {
+  let a
+  // console.log(
+  //   `What's boardLayout: ${JSON.stringify(
+  //     boardLayout
+  //   )}, and what's tile: ${JSON.stringify(tile)}`
+  // )
+  if (boardLayout.tileElement) {
+    a = tile
+  } else {
+    a = boardLayout
+  }
+
   const unminedTiles = []
 
-  boardLayout.forEach((row) => {
+  a.forEach((row) => {
     row.forEach((tile) => {
       if (!tile.mine) {
         if (
@@ -201,8 +234,6 @@ export function scoreMangement(mine) {
   const gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
   const scoreCounter = sessionStorage.getItem("scoreCounter")
 
-  console.log(initialClick, gameStatus)
-
   if (!mine) {
     if (initialClick) {
       let score = 1000
@@ -249,4 +280,22 @@ export function scoreMangement(mine) {
 
 function scoreAssigner(score) {
   gameResolutionContainer.querySelector(".score-played").textContent = score
+}
+
+function nearbyTiles(tile, board) {
+  const tiles = []
+
+  for (let xOffset = -1; xOffset <= 1; xOffset++) {
+    for (let yOffset = -1; yOffset <= 1; yOffset++) {
+      const neighbouringTile = board[tile.x + xOffset]?.[tile.y + yOffset]
+
+      if (neighbouringTile) {
+        tiles.push(neighbouringTile)
+
+        // neighbouringTile.tileStatus = TILE_STATUSES.NUMBER
+      }
+    }
+  }
+
+  return tiles
 }
