@@ -84,6 +84,7 @@ function randomPosition(BOARD_DIMENSION) {
 export function leftClickEvent(tile, boardLayout) {
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
 
+  //tile and boardLayout corrector
   if (!tile.tileElement) {
     let tileThatsBoardLayout = tile
     let boardLayoutThatsTile = boardLayout
@@ -162,18 +163,10 @@ function defeat() {
   sessionStorage.setItem("gameRunning", false)
 }
 
-export function boardInfo(boardLayout, tile) {
-  let a
-
-  if (boardLayout.tileElement) {
-    a = tile
-  } else {
-    a = boardLayout
-  }
-
+export function boardInfo(boardLayout) {
   const unminedTiles = []
 
-  a.forEach((row) => {
+  boardLayout.forEach((row) => {
     row.forEach((tile) => {
       if (!tile.mine) {
         if (

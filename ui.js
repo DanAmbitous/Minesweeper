@@ -33,8 +33,6 @@ function createBoard() {
       tile.tileElement.addEventListener("click", () => {
         const avaliableTiles = boardInfo(boardLayout) //Suspect this is the problem as to why score counter doesn't stop because when the tiles auto-reveal no click even is being triggered for it to have updated the last avaliableTiles variable on a click
 
-        console.log(avaliableTiles)
-
         const mineStatus = JSON.parse(sessionStorage.getItem("mineActive"))
 
         if (avaliableTiles.length === 0 || mineStatus) {
