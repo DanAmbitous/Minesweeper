@@ -114,21 +114,24 @@ export function leftClickEvent(tile, boardLayout) {
       tile.tileElement.textContent = minedTiles.length
     }
 
-    const hiddenTiles = scoreControler(boardLayout)
+    // const hiddenTiles = scoreControler(boardLayout)
 
-    if (hiddenTiles.length === 0) {
-      const intervalIdentifier = sessionStorage.get("scoreCounter")
+    scoreMangement(false)
 
-      clearInterval(intervalIdentifier)
-    }
+    // if (hiddenTiles.length === 0) {
+    //   console.log("hi")
+    //   const intervalIdentifier = sessionStorage.getItem("scoreCounter")
+    //   console.log(intervalIdentifier)
+    //   clearInterval(intervalIdentifier)
+    // }
   }
 
-  const unminedTiles = boardInfo(boardLayout, tile)
+  // const unminedTiles = boardInfo(boardLayout, tile)
 
   if (!tile.mine) {
-    gameEnd(!tile.mine, unminedTiles, boardLayout)
+    gameEnd(!tile.mine, boardLayout)
   } else {
-    gameEnd(!tile.mine, unminedTiles, boardLayout)
+    gameEnd(!tile.mine, boardLayout)
 
     sessionStorage.setItem("mineActive", true)
   }
@@ -136,8 +139,9 @@ export function leftClickEvent(tile, boardLayout) {
   sessionStorage.setItem("initialClick", false)
 }
 
-function gameEnd(safeTile, unminedTiles, boardLayout) {
-  unminedTiles = boardInfo(boardLayout)
+function gameEnd(safeTile, boardLayout) {
+  let unminedTiles = boardInfo(boardLayout)
+
   if (safeTile) {
     if (unminedTiles.length === 0) {
       victory()
