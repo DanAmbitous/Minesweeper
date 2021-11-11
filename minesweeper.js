@@ -81,7 +81,7 @@ function randomPosition(BOARD_DIMENSION) {
   return Number(Math.floor(Math.random() * BOARD_DIMENSION))
 }
 
-export function leftClickEvent(boardLayout, tile) {
+export function leftClickEvent(tile, boardLayout) {
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
 
   if (!tile.mine && tile.tileStatus === TILE_STATUSES.HIDDEN) {
@@ -98,13 +98,10 @@ export function leftClickEvent(boardLayout, tile) {
       neighbouringTiles.forEach(leftClickEvent.bind(null, boardLayout))
 
       //Alternative way
-      /*
-            neighbouringTiles.forEach((tile) => {
-        leftClickEvent.bind(null, boardLayout)
 
-        leftClickEvent(boardLayout, tile)
-      }
-       */
+      // neighbouringTiles.forEach((tile) => {
+      //   leftClickEvent(tile, boardLayout)
+      // })
     } else {
       tile.tileElement.textContent = minedTiles.length
     }
@@ -112,13 +109,22 @@ export function leftClickEvent(boardLayout, tile) {
 
   const unminedTiles = boardInfo(boardLayout, tile)
 
+  if (!tile.tileElement) {
+    console.log(tile, boardLayout)
+    let tileThatsBoardLayout = tile
+    let boardLayoutThatsTile = boardLayout
+
+    tile = boardLayoutThatsTile
+    boardLayout = tileThatsBoardLayout
+    console.log(tile, boardLayout)
+  }
+  console.log(tile, boardLayout)
+
   if (!tile.mine) {
-    console.log("hi")
-    console.log(tile.mine, unminedTiles, boardLayout)
+    console.log(tile, boardLayout)
 
     gameEnd(!tile.mine, unminedTiles, boardLayout)
   } else {
-    console.log("hi2")
     gameEnd(!tile.mine, unminedTiles, boardLayout)
 
     sessionStorage.setItem("mineActive", true)
@@ -128,8 +134,8 @@ export function leftClickEvent(boardLayout, tile) {
 }
 
 function gameEnd(safeTile, unminedTiles, boardLayout) {
+  console.log(safeTile)
   unminedTiles = boardInfo(boardLayout)
-  console.log(safeTile, unminedTiles, boardLayout)
   if (safeTile) {
     if (unminedTiles.length === 0) {
       victory()
@@ -163,11 +169,7 @@ function defeat() {
 
 export function boardInfo(boardLayout, tile) {
   let a
-  // console.log(
-  //   `What's boardLayout: ${JSON.stringify(
-  //     boardLayout
-  //   )}, and what's tile: ${JSON.stringify(tile)}`
-  // )
+
   if (boardLayout.tileElement) {
     a = tile
   } else {
@@ -291,8 +293,6 @@ function nearbyTiles(tile, board) {
 
       if (neighbouringTile) {
         tiles.push(neighbouringTile)
-
-        // neighbouringTile.tileStatus = TILE_STATUSES.NUMBER
       }
     }
   }
