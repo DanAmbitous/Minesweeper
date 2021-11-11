@@ -44,7 +44,7 @@ export function boardPopulation(BOARD_DIMENSION, MINE_QUANTITY) {
       }
 
       if (tile.mine) {
-        tile.tileElement.style.backgroundColor = "red"
+        tile.tileStatus = TILE_STATUSES.MINE
       }
 
       row.push(tile)
@@ -107,13 +107,19 @@ export function leftClickEvent(tile, boardLayout) {
       //The tile gets automatically added as the third parameter
       neighbouringTiles.forEach(leftClickEvent.bind(null, boardLayout))
 
-      //Alternative way
-
       // neighbouringTiles.forEach((tile) => {
       //   leftClickEvent(tile, boardLayout)
       // })
     } else {
       tile.tileElement.textContent = minedTiles.length
+    }
+
+    const hiddenTiles = scoreControler(boardLayout)
+
+    if (hiddenTiles.length === 0) {
+      const intervalIdentifier = sessionStorage.get("scoreCounter")
+
+      clearInterval(intervalIdentifier)
     }
   }
 
@@ -286,4 +292,20 @@ function nearbyTiles(tile, board) {
   }
 
   return tiles
+}
+
+function scoreControler(boardLayout) {
+  const hiddenTiles = []
+
+  boardLayout.forEach((row) => {
+    row.forEach((tile) => {
+      if (
+        tile.tileStatus === TILE_STATUSES.HIDDEN &&
+        tile.tileStatus !== TILE_STATUSES.MINE
+      )
+        hiddenTiles.push(tile)
+    })
+  })
+
+  return hiddenTiles
 }

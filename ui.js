@@ -11,7 +11,7 @@ const mineNumberIndicator = document.querySelector(".mine-number")
 createBoard()
 function createBoard() {
   let BOARD_DIMENSION = 5
-  let MINE_QUANTITY = 5
+  let MINE_QUANTITY = 1
 
   const INITIAL_SCORE = 1000
 
