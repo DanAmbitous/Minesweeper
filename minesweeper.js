@@ -84,6 +84,14 @@ function randomPosition(BOARD_DIMENSION) {
 export function leftClickEvent(tile, boardLayout) {
   let gameInitiation = JSON.parse(sessionStorage.getItem("initialClick"))
 
+  if (!tile.tileElement) {
+    let tileThatsBoardLayout = tile
+    let boardLayoutThatsTile = boardLayout
+
+    tile = boardLayoutThatsTile
+    boardLayout = tileThatsBoardLayout
+  }
+
   if (!tile.mine && tile.tileStatus === TILE_STATUSES.HIDDEN) {
     tile.tileStatus = TILE_STATUSES.NUMBER
 
@@ -95,6 +103,7 @@ export function leftClickEvent(tile, boardLayout) {
     const minedTiles = neighbouringTiles.filter((t) => t.mine)
 
     if (minedTiles.length === 0) {
+      //The tile gets automatically added as the third parameter
       neighbouringTiles.forEach(leftClickEvent.bind(null, boardLayout))
 
       //Alternative way
@@ -109,20 +118,7 @@ export function leftClickEvent(tile, boardLayout) {
 
   const unminedTiles = boardInfo(boardLayout, tile)
 
-  if (!tile.tileElement) {
-    console.log(tile, boardLayout)
-    let tileThatsBoardLayout = tile
-    let boardLayoutThatsTile = boardLayout
-
-    tile = boardLayoutThatsTile
-    boardLayout = tileThatsBoardLayout
-    console.log(tile, boardLayout)
-  }
-  console.log(tile, boardLayout)
-
   if (!tile.mine) {
-    console.log(tile, boardLayout)
-
     gameEnd(!tile.mine, unminedTiles, boardLayout)
   } else {
     gameEnd(!tile.mine, unminedTiles, boardLayout)
@@ -134,7 +130,6 @@ export function leftClickEvent(tile, boardLayout) {
 }
 
 function gameEnd(safeTile, unminedTiles, boardLayout) {
-  console.log(safeTile)
   unminedTiles = boardInfo(boardLayout)
   if (safeTile) {
     if (unminedTiles.length === 0) {
