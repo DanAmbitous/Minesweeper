@@ -116,8 +116,6 @@ export function leftClickEvent(tile, boardLayout) {
 
     // const hiddenTiles = scoreControler(boardLayout)
 
-    scoreMangement(false)
-
     // if (hiddenTiles.length === 0) {
     //   console.log("hi")
     //   const intervalIdentifier = sessionStorage.getItem("scoreCounter")
@@ -167,6 +165,9 @@ function defeat() {
   sessionStorage.setItem("gameRunning", false)
 
   gameResolutionContainer.querySelector(".game-end-status").textContent = "Lost"
+  gameResolutionContainer
+    .querySelector(".score-taken")
+    .querySelector(".score-information-content").textContent = "Try Again?"
 
   showGameResolution()
 
@@ -231,55 +232,40 @@ function showGameResolution() {
 
 export function scoreMangement(mine) {
   const initialClick = JSON.parse(sessionStorage.getItem("initialClick"))
-  const gameStatus = JSON.parse(sessionStorage.getItem("gameRunning"))
-  const scoreCounter = sessionStorage.getItem("scoreCounter")
+  const scoreCounter = JSON.parse(sessionStorage.getItem("scoreCounter"))
+  const score = JSON.parse(sessionStorage.getItem("score"))
+
+  clearInterval(scoreCounter)
 
   if (!mine) {
     if (initialClick) {
       let score = 1000
 
-      sessionStorage.setItem("score", score)
-
-      headerContainer.querySelector(".score").textContent = score
+      scoreTellerAssigner(score)
 
       let scoreDecreasing = setInterval(() => {
         score -= 10
 
-        sessionStorage.setItem("score", score)
+        sessionStorage.setItem("score", Number(score))
 
-        headerContainer.querySelector(".score").textContent = score
+        scoreTellerAssigner(score)
       }, 1000)
 
       sessionStorage.setItem("scoreCounter", scoreDecreasing)
-    } else if (gameStatus) {
-      const score = sessionStorage.getItem("score")
-
-      scoreAssigner(score)
-
-      clearInterval(scoreCounter)
     }
+
+    scoreAssigner(score)
   } else {
-    const scoreCounter = sessionStorage.getItem("scoreCounter")
-    const score = sessionStorage.getItem("score")
-
-    if (initialClick) {
-      clearInterval(scoreCounter)
-
-      headerContainer.querySelector(".score").textContent = score
-
-      scoreAssigner(score)
-    } else {
-      clearInterval(scoreCounter)
-
-      headerContainer.querySelector(".score").textContent = score
-
-      scoreAssigner(score)
-    }
+    scoreAssigner(score)
   }
 }
 
 function scoreAssigner(score) {
   gameResolutionContainer.querySelector(".score-played").textContent = score
+}
+
+function scoreTellerAssigner(score) {
+  headerContainer.querySelector(".score").textContent = score
 }
 
 function nearbyTiles(tile, board) {
